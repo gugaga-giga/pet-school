@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.MedicalRecordMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO medical_record (medical_order_id, pet_id, doctor_name, chief_complaint, physical_exam, diagnosis, medical_advice, medication, remark, visit_time)
+        VALUES (#{medicalOrderId}, #{petId}, #{doctorName}, #{chiefComplaint}, #{physicalExam}, #{diagnosis}, #{medicalAdvice}, #{medication}, #{remark}, #{visitTime})
+    </insert>
+    <select id="selectById" resultType="com.petschool.entity.MedicalRecord">
+        SELECT mr.id, mr.medical_order_id, mr.pet_id, mr.doctor_name, mr.chief_complaint, mr.physical_exam, mr.diagnosis, mr.medical_advice, mr.medication, mr.remark, mr.visit_time, mr.create_time,
+               pet.name AS pet_name,
+               u.username AS owner_name,
+               dept.name AS department_name
+        FROM medical_record mr
+        LEFT JOIN pet ON mr.pet_id = pet.id
+        LEFT JOIN user u ON pet.user_id = u.id
+        LEFT JOIN medical_order mo ON mr.medical_order_id = mo.id
+        LEFT JOIN department dept ON mo.department_id = dept.id
+        WHERE mr.id = #{id}
+    </select>
+    <select id="selectByMedicalOrderId" resultType="com.petschool.entity.MedicalRecord">
+        SELECT mr.id, mr.medical_order_id, mr.pet_id, mr.doctor_name, mr.chief_complaint, mr.physical_exam, mr.diagnosis, mr.medical_advice, mr.medication, mr.remark, mr.visit_time, mr.create_time,
+               pet.name AS pet_name,
+               u.username AS owner_name,
+               dept.name AS department_name
+        FROM medical_record mr
+        LEFT JOIN pet ON mr.pet_id = pet.id
+        LEFT JOIN user u ON pet.user_id = u.id
+        LEFT JOIN medical_order mo ON mr.medical_order_id = mo.id
+        LEFT JOIN department dept ON mo.department_id = dept.id
+        WHERE mr.medical_order_id = #{medicalOrderId}
+    </select>
+    <select id="selectByPetId" resultType="com.petschool.entity.MedicalRecord">
+        SELECT mr.id, mr.medical_order_id, mr.pet_id, mr.doctor_name, mr.chief_complaint, mr.physical_exam, mr.diagnosis, mr.medical_advice, mr.medication, mr.remark, mr.visit_time, mr.create_time,
+               pet.name AS pet_name,
+               u.username AS owner_name,
+               dept.name AS department_name
+        FROM medical_record mr
+        LEFT JOIN pet ON mr.pet_id = pet.id
+        LEFT JOIN user u ON pet.user_id = u.id
+        LEFT JOIN medical_order mo ON mr.medical_order_id = mo.id
+        LEFT JOIN department dept ON mo.department_id = dept.id
+        WHERE mr.pet_id = #{petId}
+        ORDER BY mr.create_time DESC
+    </select>
+    <select id="selectPage" resultType="com.petschool.entity.MedicalRecord">
+        SELECT mr.id, mr.medical_order_id, mr.pet_id, mr.doctor_name, mr.chief_complaint, mr.physical_exam, mr.diagnosis, mr.medical_advice, mr.medication, mr.remark, mr.visit_time, mr.create_time,
+               pet.name AS pet_name,
+               u.username AS owner_name,
+               dept.name AS department_name
+        FROM medical_record mr
+        LEFT JOIN pet ON mr.pet_id = pet.id
+        LEFT JOIN user u ON pet.user_id = u.id
+        LEFT JOIN medical_order mo ON mr.medical_order_id = mo.id
+        LEFT JOIN department dept ON mo.department_id = dept.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (pet.name LIKE CONCAT('%',#{keyword},'%') OR u.username LIKE CONCAT('%',#{keyword},'%') OR mr.doctor_name LIKE CONCAT('%',#{keyword},'%') OR mr.diagnosis LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+        </where>
+        ORDER BY mr.create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    <select id="selectPageCount" resultType="int">
+        SELECT COUNT(*) FROM medical_record mr
+        LEFT JOIN pet ON mr.pet_id = pet.id
+        LEFT JOIN user u ON pet.user_id = u.id
+        LEFT JOIN medical_order mo ON mr.medical_order_id = mo.id
+        LEFT JOIN department dept ON mo.department_id = dept.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (pet.name LIKE CONCAT('%',#{keyword},'%') OR u.username LIKE CONCAT('%',#{keyword},'%') OR mr.doctor_name LIKE CONCAT('%',#{keyword},'%') OR mr.diagnosis LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+        </where>
+    </select>
+    <update id="update">
+        UPDATE medical_record
+        <set>
+            <if test="medicalOrderId != null">medical_order_id = #{medicalOrderId},</if>
+            <if test="petId != null">pet_id = #{petId},</if>
+            <if test="doctorName != null">doctor_name = #{doctorName},</if>
+            <if test="chiefComplaint != null">chief_complaint = #{chiefComplaint},</if>
+            <if test="physicalExam != null">physical_exam = #{physicalExam},</if>
+            <if test="diagnosis != null">diagnosis = #{diagnosis},</if>
+            <if test="medicalAdvice != null">medical_advice = #{medicalAdvice},</if>
+            <if test="medication != null">medication = #{medication},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="visitTime != null">visit_time = #{visitTime},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM medical_record WHERE id = #{id}
+    </delete>
+</mapper>

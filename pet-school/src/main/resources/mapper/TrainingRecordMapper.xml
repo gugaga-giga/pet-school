@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.TrainingRecordMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO training_record (pet_id, trainer_id, item_name, content, record_date)
+        VALUES (#{petId}, #{trainerId}, #{itemName}, #{content}, #{recordDate})
+    </insert>
+    <select id="selectByPetId" resultType="com.petschool.entity.TrainingRecord">
+        SELECT id, pet_id, trainer_id, item_name, content, record_date
+        FROM training_record WHERE pet_id = #{petId} ORDER BY record_date DESC
+    </select>
+</mapper>

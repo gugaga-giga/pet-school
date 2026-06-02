@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.HealthRuleMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO health_rule (pet_type, indicator_name, min_value, max_value, warning_text, suggestion, risk_level, create_time)
+        VALUES (#{petType}, #{indicatorName}, #{minValue}, #{maxValue}, #{warningText}, #{suggestion}, #{riskLevel}, #{createTime})
+    </insert>
+
+    <select id="selectById" resultType="com.petschool.entity.HealthRule">
+        SELECT id, pet_type, indicator_name, min_value, max_value, warning_text, suggestion, risk_level, create_time
+        FROM health_rule WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="com.petschool.entity.HealthRule">
+        SELECT id, pet_type, indicator_name, min_value, max_value, warning_text, suggestion, risk_level, create_time
+        FROM health_rule ORDER BY pet_type, indicator_name
+    </select>
+
+    <select id="selectByPetType" resultType="com.petschool.entity.HealthRule">
+        SELECT id, pet_type, indicator_name, min_value, max_value, warning_text, suggestion, risk_level, create_time
+        FROM health_rule WHERE pet_type = #{petType} ORDER BY indicator_name
+    </select>
+
+    <update id="update">
+        UPDATE health_rule
+        <set>
+            <if test="petType != null">pet_type = #{petType},</if>
+            <if test="indicatorName != null">indicator_name = #{indicatorName},</if>
+            <if test="minValue != null">min_value = #{minValue},</if>
+            <if test="maxValue != null">max_value = #{maxValue},</if>
+            <if test="warningText != null">warning_text = #{warningText},</if>
+            <if test="suggestion != null">suggestion = #{suggestion},</if>
+            <if test="riskLevel != null">risk_level = #{riskLevel},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM health_rule WHERE id = #{id}
+    </delete>
+
+</mapper>

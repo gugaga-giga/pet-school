@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.MedicalOrderMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO medical_order (order_no, user_id, pet_id, doctor_id, department_id, appointment_time, symptom, price, status, remark)
+        VALUES (#{orderNo}, #{userId}, #{petId}, #{doctorId}, #{departmentId}, #{appointmentTime}, #{symptom}, #{price}, #{status}, #{remark})
+    </insert>
+    <select id="selectById" resultType="com.petschool.entity.MedicalOrder">
+        SELECT mo.id, mo.order_no, mo.user_id, mo.pet_id, mo.doctor_id, mo.department_id, mo.appointment_time, mo.symptom, mo.price, mo.status, mo.remark, mo.create_time, mo.update_time,
+               pet.name AS pet_name,
+               u.username AS owner_name,
+               doc.name AS doctor_name,
+               dept.name AS department_name
+        FROM medical_order mo
+        LEFT JOIN pet ON mo.pet_id = pet.id
+        LEFT JOIN user u ON mo.user_id = u.id
+        LEFT JOIN doctor doc ON mo.doctor_id = doc.id
+        LEFT JOIN department dept ON mo.department_id = dept.id
+        WHERE mo.id = #{id}
+    </select>
+    <select id="selectByUserId" resultType="com.petschool.entity.MedicalOrder">
+        SELECT mo.id, mo.order_no, mo.user_id, mo.pet_id, mo.doctor_id, mo.department_id, mo.appointment_time, mo.symptom, mo.price, mo.status, mo.remark, mo.create_time, mo.update_time,
+               pet.name AS pet_name,
+               u.username AS owner_name,
+               doc.name AS doctor_name,
+               dept.name AS department_name
+        FROM medical_order mo
+        LEFT JOIN pet ON mo.pet_id = pet.id
+        LEFT JOIN user u ON mo.user_id = u.id
+        LEFT JOIN doctor doc ON mo.doctor_id = doc.id
+        LEFT JOIN department dept ON mo.department_id = dept.id
+        WHERE mo.user_id = #{userId}
+        ORDER BY mo.create_time DESC
+    </select>
+    <select id="selectPage" resultType="com.petschool.entity.MedicalOrder">
+        SELECT mo.id, mo.order_no, mo.user_id, mo.pet_id, mo.doctor_id, mo.department_id, mo.appointment_time, mo.symptom, mo.price, mo.status, mo.remark, mo.create_time, mo.update_time,
+               pet.name AS pet_name,
+               u.username AS owner_name,
+               doc.name AS doctor_name,
+               dept.name AS department_name
+        FROM medical_order mo
+        LEFT JOIN pet ON mo.pet_id = pet.id
+        LEFT JOIN user u ON mo.user_id = u.id
+        LEFT JOIN doctor doc ON mo.doctor_id = doc.id
+        LEFT JOIN department dept ON mo.department_id = dept.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (mo.order_no LIKE CONCAT('%',#{keyword},'%') OR pet.name LIKE CONCAT('%',#{keyword},'%') OR u.username LIKE CONCAT('%',#{keyword},'%') OR doc.name LIKE CONCAT('%',#{keyword},'%') OR dept.name LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+            <if test="status != null">
+                AND mo.status = #{status}
+            </if>
+        </where>
+        ORDER BY mo.create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    <select id="selectPageCount" resultType="int">
+        SELECT COUNT(*) FROM medical_order mo
+        LEFT JOIN pet ON mo.pet_id = pet.id
+        LEFT JOIN user u ON mo.user_id = u.id
+        LEFT JOIN doctor doc ON mo.doctor_id = doc.id
+        LEFT JOIN department dept ON mo.department_id = dept.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (mo.order_no LIKE CONCAT('%',#{keyword},'%') OR pet.name LIKE CONCAT('%',#{keyword},'%') OR u.username LIKE CONCAT('%',#{keyword},'%') OR doc.name LIKE CONCAT('%',#{keyword},'%') OR dept.name LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+            <if test="status != null">
+                AND mo.status = #{status}
+            </if>
+        </where>
+    </select>
+    <update id="updateStatus">
+        UPDATE medical_order SET status = #{status} WHERE id = #{id}
+    </update>
+    <update id="update">
+        UPDATE medical_order
+        <set>
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="petId != null">pet_id = #{petId},</if>
+            <if test="doctorId != null">doctor_id = #{doctorId},</if>
+            <if test="departmentId != null">department_id = #{departmentId},</if>
+            <if test="appointmentTime != null">appointment_time = #{appointmentTime},</if>
+            <if test="symptom != null">symptom = #{symptom},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

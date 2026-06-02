@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.VaccineRecordMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO vaccine_record (pet_id, vaccine_name, vaccination_date, next_due_date, status)
+        VALUES (#{petId}, #{vaccineName}, #{vaccinationDate}, #{nextDueDate}, #{status})
+    </insert>
+    <select id="selectById" resultType="com.petschool.entity.VaccineRecord">
+        SELECT id, pet_id, vaccine_name, vaccination_date, next_due_date, status, create_time
+        FROM vaccine_record WHERE id = #{id}
+    </select>
+    <select id="selectByPetId" resultType="com.petschool.entity.VaccineRecord">
+        SELECT id, pet_id, vaccine_name, vaccination_date, next_due_date, status, create_time
+        FROM vaccine_record WHERE pet_id = #{petId} ORDER BY vaccination_date DESC
+    </select>
+    <select id="selectUpcoming" resultType="com.petschool.entity.VaccineRecord">
+        SELECT vr.id, vr.pet_id, vr.vaccine_name, vr.vaccination_date, vr.next_due_date, vr.status, vr.create_time,
+               pet.name AS pet_name
+        FROM vaccine_record vr
+        LEFT JOIN pet ON vr.pet_id = pet.id
+        LEFT JOIN user u ON pet.user_id = u.id
+        WHERE u.id = #{userId}
+        AND vr.status = 0
+        AND vr.next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL #{days} DAY)
+        ORDER BY vr.next_due_date ASC
+    </select>
+    <select id="selectExpired" resultType="com.petschool.entity.VaccineRecord">
+        SELECT vr.id, vr.pet_id, vr.vaccine_name, vr.vaccination_date, vr.next_due_date, vr.status, vr.create_time,
+               pet.name AS pet_name
+        FROM vaccine_record vr
+        LEFT JOIN pet ON vr.pet_id = pet.id
+        LEFT JOIN user u ON pet.user_id = u.id
+        WHERE u.id = #{userId}
+        AND vr.status = 0
+        AND vr.next_due_date &lt; CURDATE()
+        ORDER BY vr.next_due_date ASC
+    </select>
+    <select id="selectAll" resultType="com.petschool.entity.VaccineRecord">
+        SELECT vr.id, vr.pet_id, vr.vaccine_name, vr.vaccination_date, vr.next_due_date, vr.status, vr.create_time,
+               pet.name AS pet_name
+        FROM vaccine_record vr
+        LEFT JOIN pet ON vr.pet_id = pet.id
+        ORDER BY vr.create_time DESC
+    </select>
+    <update id="update">
+        UPDATE vaccine_record
+        <set>
+            <if test="petId != null">pet_id = #{petId},</if>
+            <if test="vaccineName != null">vaccine_name = #{vaccineName},</if>
+            <if test="vaccinationDate != null">vaccination_date = #{vaccinationDate},</if>
+            <if test="nextDueDate != null">next_due_date = #{nextDueDate},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM vaccine_record WHERE id = #{id}
+    </delete>
+</mapper>

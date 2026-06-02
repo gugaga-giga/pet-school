@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.DewormingRecordMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO deworming_record (pet_id, deworming_name, deworming_date, next_due_date, status)
+        VALUES (#{petId}, #{dewormingName}, #{dewormingDate}, #{nextDueDate}, #{status})
+    </insert>
+    <select id="selectById" resultType="com.petschool.entity.DewormingRecord">
+        SELECT id, pet_id, deworming_name, deworming_date, next_due_date, status, create_time
+        FROM deworming_record WHERE id = #{id}
+    </select>
+    <select id="selectByPetId" resultType="com.petschool.entity.DewormingRecord">
+        SELECT id, pet_id, deworming_name, deworming_date, next_due_date, status, create_time
+        FROM deworming_record WHERE pet_id = #{petId} ORDER BY deworming_date DESC
+    </select>
+    <select id="selectUpcoming" resultType="com.petschool.entity.DewormingRecord">
+        SELECT dr.id, dr.pet_id, dr.deworming_name, dr.deworming_date, dr.next_due_date, dr.status, dr.create_time,
+               pet.name AS pet_name
+        FROM deworming_record dr
+        LEFT JOIN pet ON dr.pet_id = pet.id
+        LEFT JOIN user u ON pet.user_id = u.id
+        WHERE u.id = #{userId}
+        AND dr.status = 0
+        AND dr.next_due_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL #{days} DAY)
+        ORDER BY dr.next_due_date ASC
+    </select>
+    <select id="selectExpired" resultType="com.petschool.entity.DewormingRecord">
+        SELECT dr.id, dr.pet_id, dr.deworming_name, dr.deworming_date, dr.next_due_date, dr.status, dr.create_time,
+               pet.name AS pet_name
+        FROM deworming_record dr
+        LEFT JOIN pet ON dr.pet_id = pet.id
+        LEFT JOIN user u ON pet.user_id = u.id
+        WHERE u.id = #{userId}
+        AND dr.status = 0
+        AND dr.next_due_date &lt; CURDATE()
+        ORDER BY dr.next_due_date ASC
+    </select>
+    <select id="selectAll" resultType="com.petschool.entity.DewormingRecord">
+        SELECT dr.id, dr.pet_id, dr.deworming_name, dr.deworming_date, dr.next_due_date, dr.status, dr.create_time,
+               pet.name AS pet_name
+        FROM deworming_record dr
+        LEFT JOIN pet ON dr.pet_id = pet.id
+        ORDER BY dr.create_time DESC
+    </select>
+    <update id="update">
+        UPDATE deworming_record
+        <set>
+            <if test="petId != null">pet_id = #{petId},</if>
+            <if test="dewormingName != null">deworming_name = #{dewormingName},</if>
+            <if test="dewormingDate != null">deworming_date = #{dewormingDate},</if>
+            <if test="nextDueDate != null">next_due_date = #{nextDueDate},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM deworming_record WHERE id = #{id}
+    </delete>
+</mapper>

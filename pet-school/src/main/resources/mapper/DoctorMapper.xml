@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.DoctorMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO doctor (name, avatar, title, department_id, specialty, experience_year, introduction, status)
+        VALUES (#{name}, #{avatar}, #{title}, #{departmentId}, #{specialty}, #{experienceYear}, #{introduction}, #{status})
+    </insert>
+    <select id="selectById" resultType="com.petschool.entity.Doctor">
+        SELECT d.id, d.name, d.avatar, d.title, d.department_id, d.specialty, d.experience_year, d.introduction, d.status, d.create_time,
+               dept.name AS department_name
+        FROM doctor d
+        LEFT JOIN department dept ON d.department_id = dept.id
+        WHERE d.id = #{id}
+    </select>
+    <select id="selectAll" resultType="com.petschool.entity.Doctor">
+        SELECT d.id, d.name, d.avatar, d.title, d.department_id, d.specialty, d.experience_year, d.introduction, d.status, d.create_time,
+               dept.name AS department_name
+        FROM doctor d
+        LEFT JOIN department dept ON d.department_id = dept.id
+        ORDER BY d.create_time DESC
+    </select>
+    <select id="selectByDepartmentId" resultType="com.petschool.entity.Doctor">
+        SELECT d.id, d.name, d.avatar, d.title, d.department_id, d.specialty, d.experience_year, d.introduction, d.status, d.create_time,
+               dept.name AS department_name
+        FROM doctor d
+        LEFT JOIN department dept ON d.department_id = dept.id
+        WHERE d.department_id = #{departmentId}
+        ORDER BY d.create_time DESC
+    </select>
+    <select id="selectActive" resultType="com.petschool.entity.Doctor">
+        SELECT d.id, d.name, d.avatar, d.title, d.department_id, d.specialty, d.experience_year, d.introduction, d.status, d.create_time,
+               dept.name AS department_name
+        FROM doctor d
+        LEFT JOIN department dept ON d.department_id = dept.id
+        WHERE d.status = 1
+        ORDER BY d.create_time DESC
+    </select>
+    <update id="update">
+        UPDATE doctor
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="departmentId != null">department_id = #{departmentId},</if>
+            <if test="specialty != null">specialty = #{specialty},</if>
+            <if test="experienceYear != null">experience_year = #{experienceYear},</if>
+            <if test="introduction != null">introduction = #{introduction},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM doctor WHERE id = #{id}
+    </delete>
+</mapper>

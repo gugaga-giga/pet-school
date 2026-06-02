@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.CourseCategoryMapper">
+    <select id="selectAll" resultType="com.petschool.entity.CourseCategory">
+        SELECT id, name, sort_order FROM course_category ORDER BY sort_order
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO course_category (name, sort_order) VALUES (#{name}, #{sortOrder})
+    </insert>
+    <update id="update">
+        UPDATE course_category SET name = #{name}, sort_order = #{sortOrder} WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM course_category WHERE id = #{id}
+    </delete>
+</mapper>

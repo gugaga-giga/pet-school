@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.CertificateMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO certificate (certificate_no, user_id, pet_id, order_id, course_id, course_name, pet_name, owner_name, graduate_date, issue_date, template_id, certificate_url, status)
+        VALUES (#{certificateNo}, #{userId}, #{petId}, #{orderId}, #{courseId}, #{courseName}, #{petName}, #{ownerName}, #{graduateDate}, #{issueDate}, #{templateId}, #{certificateUrl}, #{status})
+    </insert>
+    <select id="selectById" resultType="com.petschool.entity.Certificate">
+        SELECT id, certificate_no, user_id, pet_id, order_id, course_id, course_name, pet_name, owner_name, graduate_date, issue_date, template_id, certificate_url, status, create_time
+        FROM certificate WHERE id = #{id}
+    </select>
+    <select id="selectByCertificateNo" resultType="com.petschool.entity.Certificate">
+        SELECT id, certificate_no, user_id, pet_id, order_id, course_id, course_name, pet_name, owner_name, graduate_date, issue_date, template_id, certificate_url, status, create_time
+        FROM certificate WHERE certificate_no = #{certificateNo}
+    </select>
+    <select id="selectByUserId" resultType="com.petschool.entity.Certificate">
+        SELECT id, certificate_no, user_id, pet_id, order_id, course_id, course_name, pet_name, owner_name, graduate_date, issue_date, template_id, certificate_url, status, create_time
+        FROM certificate WHERE user_id = #{userId} ORDER BY create_time DESC
+    </select>
+    <select id="selectByOrderId" resultType="com.petschool.entity.Certificate">
+        SELECT id, certificate_no, user_id, pet_id, order_id, course_id, course_name, pet_name, owner_name, graduate_date, issue_date, template_id, certificate_url, status, create_time
+        FROM certificate WHERE order_id = #{orderId}
+    </select>
+    <select id="selectPage" resultType="com.petschool.entity.Certificate">
+        SELECT id, certificate_no, user_id, pet_id, order_id, course_id, course_name, pet_name, owner_name, graduate_date, issue_date, template_id, certificate_url, status, create_time
+        FROM certificate
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (certificate_no LIKE CONCAT('%',#{keyword},'%') OR pet_name LIKE CONCAT('%',#{keyword},'%') OR owner_name LIKE CONCAT('%',#{keyword},'%') OR course_name LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    <select id="selectPageCount" resultType="int">
+        SELECT COUNT(*) FROM certificate
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (certificate_no LIKE CONCAT('%',#{keyword},'%') OR pet_name LIKE CONCAT('%',#{keyword},'%') OR owner_name LIKE CONCAT('%',#{keyword},'%') OR course_name LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+    <select id="selectAll" resultType="com.petschool.entity.Certificate">
+        SELECT id, certificate_no, user_id, pet_id, order_id, course_id, course_name, pet_name, owner_name, graduate_date, issue_date, template_id, certificate_url, status, create_time
+        FROM certificate ORDER BY create_time DESC
+    </select>
+    <update id="updateStatus">
+        UPDATE certificate SET status = #{status} WHERE id = #{id}
+    </update>
+    <update id="update">
+        UPDATE certificate
+        <set>
+            <if test="certificateNo != null">certificate_no = #{certificateNo},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="petId != null">pet_id = #{petId},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="courseId != null">course_id = #{courseId},</if>
+            <if test="courseName != null">course_name = #{courseName},</if>
+            <if test="petName != null">pet_name = #{petName},</if>
+            <if test="ownerName != null">owner_name = #{ownerName},</if>
+            <if test="graduateDate != null">graduate_date = #{graduateDate},</if>
+            <if test="issueDate != null">issue_date = #{issueDate},</if>
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="certificateUrl != null">certificate_url = #{certificateUrl},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM certificate WHERE id = #{id}
+    </delete>
+    <delete id="deleteBatch">
+        DELETE FROM certificate WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

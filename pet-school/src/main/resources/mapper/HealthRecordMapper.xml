@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.HealthRecordMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO health_record (pet_id, temperature, weight, appetite, spirit, check_date)
+        VALUES (#{petId}, #{temperature}, #{weight}, #{appetite}, #{spirit}, #{checkDate})
+    </insert>
+    <select id="selectByPetId" resultType="com.petschool.entity.HealthRecord">
+        SELECT id, pet_id, temperature, weight, appetite, spirit, check_date
+        FROM health_record WHERE pet_id = #{petId} ORDER BY check_date DESC
+    </select>
+    <select id="selectLatestByPetId" resultType="com.petschool.entity.HealthRecord">
+        SELECT id, pet_id, temperature, weight, appetite, spirit, check_date
+        FROM health_record WHERE pet_id = #{petId} ORDER BY check_date DESC LIMIT 1
+    </select>
+</mapper>

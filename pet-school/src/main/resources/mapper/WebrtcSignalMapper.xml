@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.WebrtcSignalMapper">
+    <select id="selectByLiveId" resultType="com.petschool.entity.WebrtcSignal">
+        SELECT id, live_id, offer_sdp, answer_sdp, sender_candidates, receiver_candidates, created_at, updated_at
+        FROM webrtc_signal WHERE live_id = #{liveId}
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO webrtc_signal (live_id, offer_sdp, sender_candidates)
+        VALUES (#{liveId}, #{offerSdp}, #{senderCandidates})
+    </insert>
+    <update id="updateOffer">
+        UPDATE webrtc_signal SET offer_sdp = #{offerSdp}, sender_candidates = #{senderCandidates}, updated_at = NOW()
+        WHERE live_id = #{liveId}
+    </update>
+    <update id="updateAnswer">
+        UPDATE webrtc_signal SET answer_sdp = #{answerSdp}, receiver_candidates = #{receiverCandidates}, updated_at = NOW()
+        WHERE live_id = #{liveId}
+    </update>
+    <update id="updateSenderCandidates">
+        UPDATE webrtc_signal SET sender_candidates = #{senderCandidates}, updated_at = NOW()
+        WHERE live_id = #{liveId}
+    </update>
+    <update id="updateReceiverCandidates">
+        UPDATE webrtc_signal SET receiver_candidates = #{receiverCandidates}, updated_at = NOW()
+        WHERE live_id = #{liveId}
+    </update>
+    <delete id="deleteByLiveId">
+        DELETE FROM webrtc_signal WHERE live_id = #{liveId}
+    </delete>
+</mapper>

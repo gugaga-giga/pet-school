@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.RoomTypeMapper">
+    <select id="selectAll" resultType="com.petschool.entity.RoomType">
+        SELECT id, name, daily_price, facilities, image, capacity FROM room_type
+    </select>
+    <select id="selectById" resultType="com.petschool.entity.RoomType">
+        SELECT id, name, daily_price, facilities, image, capacity FROM room_type WHERE id = #{id}
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO room_type (name, daily_price, facilities, image, capacity)
+        VALUES (#{name}, #{dailyPrice}, #{facilities}, #{image}, #{capacity})
+    </insert>
+    <update id="update">
+        UPDATE room_type SET name = #{name}, daily_price = #{dailyPrice},
+        facilities = #{facilities}, image = #{image}, capacity = #{capacity} WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM room_type WHERE id = #{id}
+    </delete>
+    <update id="decrementCapacity">
+        UPDATE room_type SET capacity = IFNULL(capacity, 0) - 1 WHERE id = #{id} AND IFNULL(capacity, 0) > 0
+    </update>
+    <update id="incrementCapacity">
+        UPDATE room_type SET capacity = IFNULL(capacity, 0) + 1 WHERE id = #{id}
+    </update>
+</mapper>

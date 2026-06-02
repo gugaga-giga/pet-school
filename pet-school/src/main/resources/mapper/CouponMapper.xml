@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.CouponMapper">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO coupon (name, type, discount_type, discount_value, min_amount, max_discount, scope_type, scope_id, start_time, end_time, total_count, receive_count, per_limit, status, description, create_time)
+        VALUES (#{name}, #{type}, #{discountType}, #{discountValue}, #{minAmount}, #{maxDiscount}, #{scopeType}, #{scopeId}, #{startTime}, #{endTime}, #{totalCount}, #{receiveCount}, #{perLimit}, #{status}, #{description}, #{createTime})
+    </insert>
+
+    <select id="selectById" resultType="com.petschool.entity.Coupon">
+        SELECT id, name, type, discount_type, discount_value, min_amount, max_discount, scope_type, scope_id, start_time, end_time, total_count, receive_count, per_limit, status, description, create_time
+        FROM coupon WHERE id = #{id}
+    </select>
+
+    <select id="selectPage" resultType="com.petschool.entity.Coupon">
+        SELECT id, name, type, discount_type, discount_value, min_amount, max_discount, scope_type, scope_id, start_time, end_time, total_count, receive_count, per_limit, status, description, create_time
+        FROM coupon
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND name LIKE CONCAT('%',#{keyword},'%')
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="selectPageCount" resultType="int">
+        SELECT COUNT(*) FROM coupon
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND name LIKE CONCAT('%',#{keyword},'%')
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAll" resultType="com.petschool.entity.Coupon">
+        SELECT id, name, type, discount_type, discount_value, min_amount, max_discount, scope_type, scope_id, start_time, end_time, total_count, receive_count, per_limit, status, description, create_time
+        FROM coupon ORDER BY create_time DESC
+    </select>
+
+    <select id="selectActive" resultType="com.petschool.entity.Coupon">
+        SELECT id, name, type, discount_type, discount_value, min_amount, max_discount, scope_type, scope_id, start_time, end_time, total_count, receive_count, per_limit, status, description, create_time
+        FROM coupon
+        WHERE status = 1
+          AND (start_time IS NULL OR start_time &lt;= NOW())
+          AND (end_time IS NULL OR end_time &gt;= NOW())
+          AND (total_count IS NULL OR receive_count &lt; total_count)
+        ORDER BY create_time DESC
+    </select>
+
+    <update id="update">
+        UPDATE coupon
+        SET name = #{name}, type = #{type}, discount_type = #{discountType}, discount_value = #{discountValue},
+            min_amount = #{minAmount}, max_discount = #{maxDiscount}, scope_type = #{scopeType}, scope_id = #{scopeId},
+            start_time = #{startTime}, end_time = #{endTime}, total_count = #{totalCount}, per_limit = #{perLimit},
+            status = #{status}, description = #{description}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateReceiveCount">
+        UPDATE coupon SET receive_count = receive_count + 1 WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM coupon WHERE id = #{id}
+    </delete>
+</mapper>

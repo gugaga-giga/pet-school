@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.RoomMapper">
+    <select id="selectByTypeId" resultType="com.petschool.entity.Room">
+        SELECT id, type_id, room_number, status FROM room WHERE type_id = #{typeId}
+    </select>
+    <select id="selectById" resultType="com.petschool.entity.Room">
+        SELECT id, type_id, room_number, status FROM room WHERE id = #{id}
+    </select>
+    <update id="updateStatus">
+        UPDATE room SET status = #{status} WHERE id = #{id}
+    </update>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO room (type_id, room_number, status)
+        VALUES (#{typeId}, #{roomNumber}, #{status})
+    </insert>
+    <update id="update">
+        UPDATE room SET type_id = #{typeId}, room_number = #{roomNumber}, status = #{status} WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM room WHERE id = #{id}
+    </delete>
+    <select id="countOccupiedByTypeId" resultType="int">
+        SELECT COUNT(*) FROM room WHERE type_id = #{typeId} AND status = 1
+    </select>
+</mapper>

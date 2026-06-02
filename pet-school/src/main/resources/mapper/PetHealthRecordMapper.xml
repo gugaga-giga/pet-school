@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.PetHealthRecordMapper">
+
+    <sql id="selectColumns">
+        r.id, r.pet_id, r.pet_type, r.age, r.weight, r.temperature,
+        r.heart_rate, r.respiration_rate, r.appetite, r.mental_status,
+        r.hair_condition, r.feces_status, r.vaccine_status, r.deworming_status,
+        r.health_score, r.risk_level, r.ai_advice, r.remark,
+        r.inspection_date, r.create_time, r.update_time,
+        r.pet_name, r.owner_name
+    </sql>
+
+    <sql id="joinSelect">
+        r.id, r.pet_id, r.pet_type, r.age, r.weight, r.temperature,
+        r.heart_rate, r.respiration_rate, r.appetite, r.mental_status,
+        r.hair_condition, r.feces_status, r.vaccine_status, r.deworming_status,
+        r.health_score, r.risk_level, r.ai_advice, r.remark,
+        r.inspection_date, r.create_time, r.update_time,
+        p.name as pet_name, u.username as owner_name
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pet_health_record (
+            pet_id, pet_type, age, weight, temperature,
+            heart_rate, respiration_rate, appetite, mental_status,
+            hair_condition, feces_status, vaccine_status, deworming_status,
+            health_score, risk_level, ai_advice, remark,
+            inspection_date, create_time, update_time,
+            pet_name, owner_name
+        ) VALUES (
+            #{petId}, #{petType}, #{age}, #{weight}, #{temperature},
+            #{heartRate}, #{respirationRate}, #{appetite}, #{mentalStatus},
+            #{hairCondition}, #{fecesStatus}, #{vaccineStatus}, #{dewormingStatus},
+            #{healthScore}, #{riskLevel}, #{aiAdvice}, #{remark},
+            #{inspectionDate}, #{createTime}, #{updateTime},
+            #{petName}, #{ownerName}
+        )
+    </insert>
+
+    <select id="selectById" resultType="com.petschool.entity.PetHealthRecord">
+        SELECT <include refid="joinSelect"/>
+        FROM pet_health_record r
+        LEFT JOIN pet p ON r.pet_id = p.id
+        LEFT JOIN user u ON p.user_id = u.id
+        WHERE r.id = #{id}
+    </select>
+
+    <select id="selectByPetId" resultType="com.petschool.entity.PetHealthRecord">
+        SELECT <include refid="joinSelect"/>
+        FROM pet_health_record r
+        LEFT JOIN pet p ON r.pet_id = p.id
+        LEFT JOIN user u ON p.user_id = u.id
+        WHERE r.pet_id = #{petId}
+        ORDER BY r.inspection_date DESC
+    </select>
+
+    <select id="selectLatestByPetId" resultType="com.petschool.entity.PetHealthRecord">
+        SELECT <include refid="joinSelect"/>
+        FROM pet_health_record r
+        LEFT JOIN pet p ON r.pet_id = p.id
+        LEFT JOIN user u ON p.user_id = u.id
+        WHERE r.pet_id = #{petId}
+        ORDER BY r.inspection_date DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectPage" resultType="com.petschool.entity.PetHealthRecord">
+        SELECT <include refid="joinSelect"/>
+        FROM pet_health_record r
+        LEFT JOIN pet p ON r.pet_id = p.id
+        LEFT JOIN user u ON p.user_id = u.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (p.name LIKE CONCAT('%',#{keyword},'%') OR u.username LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+            <if test="riskLevel != null">
+                AND r.risk_level = #{riskLevel}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND r.inspection_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND r.inspection_date &lt;= #{endDate}
+            </if>
+        </where>
+        ORDER BY r.inspection_date DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="selectPageCount" resultType="int">
+        SELECT COUNT(*) FROM pet_health_record r
+        LEFT JOIN pet p ON r.pet_id = p.id
+        LEFT JOIN user u ON p.user_id = u.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (p.name LIKE CONCAT('%',#{keyword},'%') OR u.username LIKE CONCAT('%',#{keyword},'%'))
+            </if>
+            <if test="riskLevel != null">
+                AND r.risk_level = #{riskLevel}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND r.inspection_date &gt;= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND r.inspection_date &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAll" resultType="com.petschool.entity.PetHealthRecord">
+        SELECT <include refid="selectColumns"/>
+        FROM pet_health_record r
+        ORDER BY r.inspection_date DESC
+    </select>
+
+    <update id="update">
+        UPDATE pet_health_record
+        <set>
+            <if test="petId != null">pet_id = #{petId},</if>
+            <if test="petType != null">pet_type = #{petType},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="heartRate != null">heart_rate = #{heartRate},</if>
+            <if test="respirationRate != null">respiration_rate = #{respirationRate},</if>
+            <if test="appetite != null">appetite = #{appetite},</if>
+            <if test="mentalStatus != null">mental_status = #{mentalStatus},</if>
+            <if test="hairCondition != null">hair_condition = #{hairCondition},</if>
+            <if test="fecesStatus != null">feces_status = #{fecesStatus},</if>
+            <if test="vaccineStatus != null">vaccine_status = #{vaccineStatus},</if>
+            <if test="dewormingStatus != null">deworming_status = #{dewormingStatus},</if>
+            <if test="healthScore != null">health_score = #{healthScore},</if>
+            <if test="riskLevel != null">risk_level = #{riskLevel},</if>
+            <if test="aiAdvice != null">ai_advice = #{aiAdvice},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="inspectionDate != null">inspection_date = #{inspectionDate},</if>
+            <if test="petName != null">pet_name = #{petName},</if>
+            <if test="ownerName != null">owner_name = #{ownerName},</if>
+            update_time = NOW(),
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM pet_health_record WHERE id = #{id}
+    </delete>
+
+    <select id="selectTrendByPetId" resultType="com.petschool.entity.PetHealthRecord">
+        SELECT weight, temperature, heart_rate, inspection_date
+        FROM pet_health_record
+        WHERE pet_id = #{petId}
+        ORDER BY inspection_date ASC
+        LIMIT #{limit}
+    </select>
+
+</mapper>
