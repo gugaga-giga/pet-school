@@ -139,8 +139,11 @@
         <div class="modal-body">
           <div class="form-grid">
             <div class="form-group">
-              <label>宠物ID</label>
-              <input v-model.number="form.petId" type="number" placeholder="输入宠物ID" />
+              <label>宠物</label>
+              <select v-model.number="form.petId">
+                <option :value="null" disabled>请选择宠物</option>
+                <option v-for="p in petList" :key="p.id" :value="p.id">{{ p.name }}（{{ p.breed || '未知品种' }} - 主人: {{ p.username || '未知' }}）</option>
+              </select>
             </div>
             <div class="form-group">
               <label>体重 (kg)</label>
@@ -330,6 +333,7 @@ const search = ref({
 const showForm = ref(false)
 const editMode = ref(false)
 const form = ref(getDefaultForm())
+const petList = ref([])
 const showDetail = ref(false)
 const detailRecord = ref(null)
 
@@ -415,18 +419,29 @@ function resetSearch() {
 function openAdd() {
   editMode.value = false
   form.value = getDefaultForm()
+  loadPetList()
   showForm.value = true
 }
 
 function openEdit(record) {
   editMode.value = true
   form.value = { ...getDefaultForm(), ...record }
+  loadPetList()
   showForm.value = true
+}
+
+async function loadPetList() {
+  try {
+    const res = await adminApi.petPage({ page: 1, pageSize: 500 })
+    if (res.code === 200) {
+      petList.value = res.data?.list || res.data?.records || []
+    }
+  } catch {}
 }
 
 async function handleSave() {
   if (!form.value.petId) {
-    alert('请输入宠物ID')
+    alert('请选择宠物')
     return
   }
   try {
@@ -617,7 +632,7 @@ onMounted(loadData)
 
 .score-success {
   background: var(--color-success-bg);
-  color: #15803d;
+  color: var(--color-success-text);
 }
 
 .score-primary {
@@ -627,12 +642,12 @@ onMounted(loadData)
 
 .score-warning {
   background: var(--color-warning-bg);
-  color: #92400e;
+  color: var(--color-warning-text);
 }
 
 .score-danger {
   background: var(--color-danger-bg);
-  color: #991b1b;
+  color: var(--color-danger-text);
 }
 
 .pagination {
@@ -705,7 +720,7 @@ onMounted(loadData)
 .detail-score-ring {
   width: 100px;
   height: 100px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   display: flex;
   flex-direction: column;
   align-items: center;

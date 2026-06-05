@@ -21,7 +21,11 @@ const routes = [
       { path: 'medical-order', component: () => import('../views/client/MedicalOrder.vue'), meta: { title: '医疗订单' } },
       { path: 'medical-record', component: () => import('../views/client/MedicalRecord.vue'), meta: { title: '我的病历' } },
       { path: 'vaccine', component: () => import('../views/client/Vaccine.vue'), meta: { title: '疫苗提醒' } },
-      { path: 'wallet', component: () => import('../views/client/Wallet.vue'), meta: { title: '我的钱包' } }
+      { path: 'wallet', component: () => import('../views/client/Wallet.vue'), meta: { title: '我的钱包' } },
+      { path: 'pet', component: () => import('../views/client/Pet.vue'), meta: { title: '我的宠物' } },
+      { path: 'pet/create', component: () => import('../views/client/PetEdit.vue'), meta: { title: '新增宠物' } },
+      { path: 'pet/edit/:id', component: () => import('../views/client/PetEdit.vue'), meta: { title: '编辑宠物' } },
+      { path: 'pet/detail/:id', component: () => import('../views/client/PetDetail.vue'), meta: { title: '宠物详情' } }
     ]
   },
   {
@@ -45,6 +49,8 @@ const routes = [
       { path: 'medical-deworming', component: () => import('../views/admin/MedicalDeworming.vue'), meta: { title: '驱虫管理' } },
       { path: 'wallet', component: () => import('../views/admin/WalletManage.vue'), meta: { title: '钱包管理' } },
       { path: 'wallet-record', component: () => import('../views/admin/WalletRecord.vue'), meta: { title: '钱包流水' } },
+      { path: 'pet', component: () => import('../views/admin/PetManage.vue'), meta: { title: '宠物管理' } },
+      { path: 'pet/detail/:id', component: () => import('../views/admin/PetDetail.vue'), meta: { title: '宠物详情' } },
       { path: 'order', name: 'AdminOrder', component: () => import('../views/admin/Order.vue'), meta: { requireAuth: true, endpoint: 'admin' } }
     ]
   },

@@ -59,7 +59,13 @@ export const authApi = {
 export const petApi = {
   add: (data) => clientRequest.post('/pet/add', data),
   getById: (id) => clientRequest.get(`/pet/${id}`),
-  getByUserId: (userId) => clientRequest.get(`/pet/user/${userId}`)
+  getByUserId: (userId) => clientRequest.get(`/pet/user/${userId}`),
+  my: () => clientRequest.get('/pet/my'),
+  detail: (id) => clientRequest.get(`/pet/detail/${id}`),
+  create: (data) => clientRequest.post('/pet/create', data),
+  update: (data) => clientRequest.put('/pet/update', data),
+  delete: (id) => clientRequest.delete(`/pet/delete/${id}`),
+  hasPet: () => clientRequest.get('/pet/has-pet')
 }
 
 export const courseApi = {
@@ -265,7 +271,12 @@ export const adminApi = {
   walletPage: (params) => adminRequest.get('/wallet/admin/page', { params }),
   walletAdjust: (data) => adminRequest.post('/wallet/admin/adjust', data),
   walletStatus: (data) => adminRequest.put('/wallet/admin/status', data),
-  walletRecords: (params) => adminRequest.get('/wallet/admin/records', { params })
+  walletRecords: (params) => adminRequest.get('/wallet/admin/records', { params }),
+  petPage: (params) => adminRequest.get('/admin/pet/page', { params }),
+  petDetail: (id) => adminRequest.get(`/admin/pet/detail/${id}`),
+  petUpdate: (data) => adminRequest.put('/admin/pet/update', data),
+  petDelete: (id) => adminRequest.delete(`/admin/pet/delete/${id}`),
+  petStats: () => adminRequest.get('/admin/pet/stats')
 }
 
 export const walletApi = {

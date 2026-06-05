@@ -334,7 +334,7 @@ onMounted(loadData)
 
 .page-title {
   font-size: var(--font-size-2xl);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-title);
   margin: 0;
 }
@@ -407,7 +407,7 @@ onMounted(loadData)
 .search-input {
   width: 100%;
   padding: 10px 14px 10px 40px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   background: var(--bg-page);
   font-size: var(--font-size-sm);
@@ -418,7 +418,7 @@ onMounted(loadData)
 
 .search-input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.12);
+  box-shadow: 0 0 0 3px var(--color-primary-bg);
   background: var(--bg-card);
 }
 
@@ -428,7 +428,7 @@ onMounted(loadData)
 
 .status-select {
   padding: 10px 32px 10px 14px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   background: var(--bg-page);
   font-size: var(--font-size-sm);
@@ -444,7 +444,7 @@ onMounted(loadData)
 
 .status-select:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.12);
+  box-shadow: 0 0 0 3px var(--color-primary-bg);
 }
 
 .table-card {
@@ -457,7 +457,7 @@ onMounted(loadData)
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4) var(--space-5);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .record-count {
@@ -467,7 +467,7 @@ onMounted(loadData)
 
 .record-count strong {
   color: var(--text-title);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .batch-btn {
@@ -484,10 +484,10 @@ onMounted(loadData)
   height: 20px;
   padding: 0 6px;
   border-radius: var(--radius-full);
-  background: rgba(255, 107, 107, 0.2);
+  background: var(--color-danger-bg);
   color: var(--color-danger);
   font-size: var(--font-size-xs);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   line-height: 1;
 }
 
@@ -503,14 +503,14 @@ onMounted(loadData)
 .data-table thead th {
   padding: var(--space-3) var(--space-4);
   font-size: var(--font-size-xs);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   text-align: left;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--border-color);
   white-space: nowrap;
-  background: rgba(247, 249, 252, 0.5);
+  background: var(--bg-page);
 }
 
 .col-check {
@@ -537,7 +537,7 @@ onMounted(loadData)
   padding: var(--space-3) var(--space-4);
   font-size: var(--font-size-sm);
   color: var(--text-title);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid var(--border-light);
   vertical-align: middle;
 }
 
@@ -546,11 +546,11 @@ onMounted(loadData)
 }
 
 .table-row:hover {
-  background: rgba(79, 124, 255, 0.03);
+  background: var(--bg-hover);
 }
 
 .table-row:hover td {
-  border-bottom-color: rgba(79, 124, 255, 0.08);
+  border-bottom-color: var(--color-primary-bg);
 }
 
 .data-table input[type="checkbox"] {
@@ -573,7 +573,7 @@ onMounted(loadData)
   justify-content: center;
   gap: var(--space-1);
   padding: var(--space-4) var(--space-5);
-  border-top: 1px solid rgba(0, 0, 0, 0.04);
+  border-top: 1px solid var(--border-light);
 }
 
 .page-pill {
@@ -584,7 +584,7 @@ onMounted(loadData)
   border-radius: var(--radius-full);
   background: transparent;
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-body);
   cursor: pointer;
   transition: all var(--transition-base);
@@ -600,8 +600,8 @@ onMounted(loadData)
 
 .page-pill.active {
   background: var(--color-primary);
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(79, 124, 255, 0.3);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-button);
 }
 
 .page-pill:disabled {
@@ -616,7 +616,7 @@ onMounted(loadData)
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(15, 23, 42, 0.4);
+  background: var(--bg-overlay);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   animation: fadeIn 0.2s ease;
@@ -652,13 +652,13 @@ onMounted(loadData)
   align-items: center;
   justify-content: space-between;
   padding: var(--space-5) var(--space-6);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h3 {
   margin: 0;
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-title);
 }
 
@@ -680,7 +680,7 @@ onMounted(loadData)
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3) 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .detail-row:last-child {
@@ -696,7 +696,7 @@ onMounted(loadData)
 .detail-value {
   font-size: var(--font-size-sm);
   color: var(--text-title);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   text-align: right;
   word-break: break-all;
 }

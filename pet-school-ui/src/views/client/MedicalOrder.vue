@@ -228,7 +228,7 @@ onMounted(() => {
 }
 
 .sub-nav-icon {
-  font-size: 14px;
+  font-size: var(--font-size-base);
 }
 
 .tab-bar {
@@ -286,8 +286,8 @@ onMounted(() => {
   padding: 0 5px;
   border-radius: var(--radius-full);
   background: rgba(255, 255, 255, 0.25);
-  font-size: 11px;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   line-height: 1;
 }
 
@@ -321,7 +321,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: var(--space-4) var(--space-5);
-  background: linear-gradient(135deg, rgba(79, 124, 255, 0.02), rgba(255, 184, 107, 0.02));
+  background: linear-gradient(135deg, var(--color-primary-50), var(--color-accent-bg));
   border-bottom: 1px solid var(--border-light);
 }
 

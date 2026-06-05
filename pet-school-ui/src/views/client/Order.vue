@@ -212,7 +212,7 @@ onMounted(loadOrders)
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: var(--font-size-xl);
   flex-shrink: 0;
 }
 
@@ -362,7 +362,7 @@ onMounted(loadOrders)
 
 .type-boarding {
   background: var(--color-accent-bg);
-  color: #92400e;
+  color: var(--color-warning-text);
 }
 
 .order-no {

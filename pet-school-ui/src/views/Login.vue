@@ -109,7 +109,7 @@ async function submit() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #4F7CFF 0%, #7B9EFF 40%, #FFB86B 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 40%, var(--color-accent) 100%);
   position: relative;
   overflow: hidden;
 }
@@ -134,11 +134,11 @@ async function submit() {
 .login-card {
   width: 420px;
   max-width: 92vw;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-2xl);
   padding: var(--space-7) var(--space-6);
   position: relative;
   z-index: 1;
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-float);
 }
 
 .login-header { text-align: center; margin-bottom: var(--space-5); }
@@ -155,7 +155,7 @@ async function submit() {
   cursor: pointer;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  transition: color var(--transition-fast);
+  transition: color var(--transition-base);
 }
 
 .login-switch:hover { color: var(--color-primary-dark); }
@@ -178,7 +178,7 @@ async function submit() {
   font-size: var(--font-size-xs);
   color: var(--text-body);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--transition-base);
   font-weight: var(--font-weight-medium);
 }
 

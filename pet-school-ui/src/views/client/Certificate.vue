@@ -111,7 +111,7 @@ onMounted(loadCertificates)
 
 .page-title {
   font-size: var(--font-size-2xl);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-title);
   margin: 0;
 }
@@ -139,7 +139,7 @@ onMounted(loadCertificates)
 
 .empty-sparkle {
   position: absolute;
-  font-size: 20px;
+  font-size: var(--font-size-lg);
   animation: sparkle 2s ease-in-out infinite;
 }
 
@@ -168,7 +168,7 @@ onMounted(loadCertificates)
 
 .empty-title {
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-title);
   margin: 0 0 var(--space-2) 0;
 }
@@ -204,7 +204,7 @@ onMounted(loadCertificates)
   width: 100%;
   aspect-ratio: 16 / 10;
   overflow: hidden;
-  background: linear-gradient(135deg, #fff8ee 0%, #eef2ff 50%, #ecfdf5 100%);
+  background: linear-gradient(135deg, var(--color-accent-bg) 0%, var(--color-primary-50) 50%, var(--color-success-bg) 100%);
   position: relative;
 }
 
@@ -237,7 +237,7 @@ onMounted(loadCertificates)
 .placeholder-label {
   font-size: var(--font-size-sm);
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .cert-body {
@@ -247,7 +247,7 @@ onMounted(loadCertificates)
 
 .cert-pet-name {
   font-size: var(--font-size-lg);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-title);
   margin: 0 0 var(--space-1) 0;
 }
@@ -255,7 +255,7 @@ onMounted(loadCertificates)
 .cert-course {
   font-size: var(--font-size-sm);
   color: var(--color-primary);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   margin: 0 0 var(--space-3) 0;
 }
 

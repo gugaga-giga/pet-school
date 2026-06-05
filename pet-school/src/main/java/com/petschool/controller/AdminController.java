@@ -77,6 +77,42 @@ public class AdminController {
     @GetMapping("/pet/list")
     public Map<String, Object> petListByUser(@RequestParam Long userId) { return ok(petService.getByUserId(userId)); }
 
+    @GetMapping("/pet/page")
+    public Map<String, Object> petPage(
+            @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(required = false) String petType,
+            @RequestParam(required = false) Integer status,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return ok(petService.page(keyword, petType, status, page, pageSize));
+    }
+
+    @GetMapping("/pet/detail/{id}")
+    public Map<String, Object> petDetail(@PathVariable Long id) {
+        Pet pet = petService.getDetailById(id);
+        return pet != null ? ok(pet) : fail("宠物不存在");
+    }
+
+    @PutMapping("/pet/update")
+    public Map<String, Object> petUpdate(@RequestBody Pet pet) {
+        int rows = petService.update(pet);
+        return rows > 0 ? ok("修改成功", null) : fail("修改失败");
+    }
+
+    @DeleteMapping("/pet/delete/{id}")
+    public Map<String, Object> petDelete(@PathVariable Long id) {
+        try {
+            petService.checkCanDelete(id);
+        } catch (RuntimeException e) {
+            return fail(e.getMessage());
+        }
+        int rows = petService.deleteById(id);
+        return rows > 0 ? ok("删除成功", null) : fail("删除失败");
+    }
+
+    @GetMapping("/pet/stats")
+    public Map<String, Object> petStats() { return ok(petService.getStats()); }
+
     @GetMapping("/course/list")
     public Map<String, Object> courseList() { return ok(courseService.listAll()); }
 

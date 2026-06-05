@@ -156,19 +156,19 @@ onMounted(() => loadData())
 .data-table tr:hover td { background: var(--bg-hover); }
 .money { font-weight: var(--font-weight-semibold); font-variant-numeric: tabular-nums; }
 .empty { text-align: center; color: var(--text-muted); padding: var(--space-8) !important; }
-.status-tag { display: inline-block; padding: 2px 10px; border-radius: var(--radius-full); font-size: 12px; font-weight: var(--font-weight-semibold); }
-.status-active { background: #E8F5E9; color: #2E7D32; }
-.status-frozen { background: #FFEBEE; color: #C62828; }
+.status-tag { display: inline-block; padding: 2px 10px; border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); }
+.status-active { background: var(--color-success-bg); color: var(--color-success-text); }
+.status-frozen { background: var(--color-danger-bg); color: var(--color-danger-text); }
 .action-group { display: flex; gap: var(--space-2); }
 .pagination { display: flex; align-items: center; justify-content: center; gap: var(--space-3); margin-top: var(--space-4); }
 .page-pill { padding: 6px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-card); cursor: pointer; font-size: var(--font-size-sm); }
 .page-pill:disabled { opacity: 0.4; cursor: not-allowed; }
 .page-info { font-size: var(--font-size-sm); color: var(--text-muted); }
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-overlay { position: fixed; inset: 0; background: var(--bg-overlay); display: flex; align-items: center; justify-content: center; z-index: 1000; }
 .modal { background: var(--bg-card); border-radius: var(--radius-lg); width: 440px; max-width: 90vw; box-shadow: var(--shadow-lg); }
 .modal-header { display: flex; justify-content: space-between; align-items: center; padding: var(--space-5) var(--space-6); border-bottom: 1px solid var(--border-light); }
 .modal-header h3 { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); }
-.btn-icon { background: none; border: none; cursor: pointer; font-size: 18px; color: var(--text-muted); }
+.btn-icon { background: none; border: none; cursor: pointer; font-size: var(--font-size-lg); color: var(--text-muted); }
 .modal-body { padding: var(--space-6); }
 .form-group { margin-bottom: var(--space-4); }
 .form-group label { display: block; font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--text-body); margin-bottom: var(--space-1); }

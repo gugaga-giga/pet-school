@@ -212,7 +212,7 @@ onMounted(loadCoupons)
 }
 
 .ticket-left--universal {
-  background: linear-gradient(135deg, #4F7CFF 0%, #FFB86B 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
 }
 
 .ticket-value {

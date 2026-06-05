@@ -296,7 +296,7 @@ onMounted(() => {
 }
 
 .sub-nav-icon {
-  font-size: 14px;
+  font-size: var(--font-size-base);
 }
 
 .medical-layout {
@@ -345,17 +345,17 @@ onMounted(() => {
 
 .dept-item:hover {
   background: var(--color-primary-bg);
-  border-color: rgba(79, 124, 255, 0.15);
+  border-color: var(--color-primary-200);
 }
 
 .dept-item--active {
   background: var(--color-primary-bg);
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(79, 124, 255, 0.1);
+  box-shadow: 0 0 0 2px var(--color-primary-50);
 }
 
 .dept-icon {
-  font-size: 20px;
+  font-size: var(--font-size-lg);
   width: 28px;
   text-align: center;
   flex-shrink: 0;
@@ -450,7 +450,7 @@ onMounted(() => {
 .doctor-card--selected {
   border-color: var(--color-primary);
   box-shadow: var(--shadow-card-hover), 0 0 0 3px var(--color-primary-bg);
-  background: linear-gradient(135deg, rgba(79, 124, 255, 0.02), rgba(255, 184, 107, 0.02));
+  background: linear-gradient(135deg, var(--color-primary-50), var(--color-accent-bg));
 }
 
 .doctor-avatar {
@@ -529,7 +529,7 @@ onMounted(() => {
 
 .doctor-card--selected .doctor-book-btn {
   background: var(--color-success);
-  box-shadow: 0 2px 8px rgba(60, 203, 127, 0.3);
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
 }
 
 .empty-doctors {
@@ -587,7 +587,7 @@ onMounted(() => {
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3);
-  background: linear-gradient(135deg, var(--color-primary-bg), rgba(255, 184, 107, 0.06));
+  background: linear-gradient(135deg, var(--color-primary-bg), var(--color-accent-bg));
   border-radius: var(--radius-md);
   margin-bottom: var(--space-4);
 }
@@ -630,7 +630,7 @@ onMounted(() => {
   background: var(--color-accent-bg);
   border-radius: var(--radius-md);
   margin-bottom: var(--space-4);
-  border: 1px solid rgba(255, 184, 107, 0.2);
+  border: 1px solid var(--color-accent-bg);
 }
 
 .fee-label {

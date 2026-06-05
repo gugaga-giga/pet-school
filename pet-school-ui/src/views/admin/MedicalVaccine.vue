@@ -259,7 +259,7 @@ onMounted(loadData)
 .search-input {
   width: 100%;
   padding: 10px 14px 10px 40px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   background: var(--bg-page);
   font-size: var(--font-size-sm);
@@ -270,7 +270,7 @@ onMounted(loadData)
 
 .search-input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.12);
+  box-shadow: 0 0 0 3px var(--color-primary-bg);
   background: var(--bg-card);
 }
 
@@ -280,7 +280,7 @@ onMounted(loadData)
 
 .filter-select {
   padding: 10px 32px 10px 14px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-full);
   background: var(--bg-page);
   font-size: var(--font-size-sm);
@@ -296,7 +296,7 @@ onMounted(loadData)
 
 .filter-select:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.12);
+  box-shadow: 0 0 0 3px var(--color-primary-bg);
 }
 
 .table-card {
@@ -309,7 +309,7 @@ onMounted(loadData)
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4) var(--space-5);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .record-count {
@@ -319,7 +319,7 @@ onMounted(loadData)
 
 .record-count strong {
   color: var(--text-title);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .table-wrap {
@@ -334,21 +334,21 @@ onMounted(loadData)
 .data-table thead th {
   padding: var(--space-3) var(--space-4);
   font-size: var(--font-size-xs);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   text-align: left;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--border-color);
   white-space: nowrap;
-  background: rgba(247, 249, 252, 0.5);
+  background: var(--bg-page);
 }
 
 .data-table tbody td {
   padding: var(--space-3) var(--space-4);
   font-size: var(--font-size-sm);
   color: var(--text-title);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid var(--border-light);
   vertical-align: middle;
 }
 
@@ -357,7 +357,7 @@ onMounted(loadData)
 }
 
 .table-row:hover {
-  background: rgba(79, 124, 255, 0.03);
+  background: var(--bg-hover);
 }
 
 .td-name {
@@ -389,7 +389,7 @@ onMounted(loadData)
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(15, 23, 42, 0.4);
+  background: var(--bg-overlay);
   backdrop-filter: blur(8px);
   animation: fadeIn 0.2s ease;
 }
@@ -411,13 +411,13 @@ onMounted(loadData)
   align-items: center;
   justify-content: space-between;
   padding: var(--space-5) var(--space-6);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h3 {
   margin: 0;
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-title);
 }
 
@@ -455,7 +455,7 @@ onMounted(loadData)
   justify-content: flex-end;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-6);
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid var(--border-color);
 }
 
 .empty-state {
@@ -465,7 +465,7 @@ onMounted(loadData)
 }
 
 .empty-icon {
-  font-size: 48px;
+  font-size: var(--font-size-3xl);
   margin-bottom: var(--space-3);
   opacity: 0.6;
 }

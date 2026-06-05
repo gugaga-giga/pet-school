@@ -59,16 +59,29 @@
         </div>
       </div>
     </section>
+    <!-- First login guidance modal -->
+    <div class="modal-overlay" v-if="showGuide" @click.self="showGuide = false">
+      <div class="modal-content guide-modal">
+        <div class="guide-icon">🐾</div>
+        <h2 class="guide-title">欢迎使用宠物综合服务平台</h2>
+        <p class="guide-desc">请先完善宠物资料，以便享受课程、寄宿、医疗等全方位服务</p>
+        <div class="guide-actions">
+          <button class="btn btn-primary btn-lg" @click="goAddPet">立即填写</button>
+          <button class="btn btn-ghost" @click="dismissGuide">稍后填写</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { courseApi } from '../../api'
+import { courseApi, petApi } from '../../api'
 
 const router = useRouter()
 const courses = ref([])
+const showGuide = ref(false)
 
 const stats = [
   { value: '2,680+', label: '累计宠物' },
@@ -79,17 +92,17 @@ const stats = [
 
 const features = [
   {
-    icon: '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#EEF2FF"/><path d="M16 24l4 4 8-8" stroke="#4F7CFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 14h20v20H14z" stroke="#4F7CFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/></svg>',
+    icon: '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" style="fill:var(--color-primary-bg)"/><path d="M16 24l4 4 8-8" style="stroke:var(--color-primary)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 14h20v20H14z" style="stroke:var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/></svg>',
     title: '专业训练',
     desc: '持证训练师团队，科学正向训练方法，量身定制训练方案'
   },
   {
-    icon: '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#FFF7ED"/><path d="M24 14v10l6 4" stroke="#FFB86B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="10" stroke="#FFB86B" stroke-width="2" opacity=".3"/></svg>',
+    icon: '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" style="fill:var(--color-accent-bg)"/><path d="M24 14v10l6 4" style="stroke:var(--color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="10" style="stroke:var(--color-accent)" stroke-width="2" opacity=".3"/></svg>',
     title: '安心寄宿',
     desc: '全天候专业看护，恒温舒适环境，实时视频查看爱宠状态'
   },
   {
-    icon: '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" fill="#ECFDF5"/><path d="M18 30V22m6-4v12m6-8v8" stroke="#3CCB7F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 34h20" stroke="#3CCB7F" stroke-width="2" stroke-linecap="round" opacity=".3"/></svg>',
+    icon: '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="22" style="fill:var(--color-success-bg)"/><path d="M18 30V22m6-4v12m6-8v8" style="stroke:var(--color-success)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 34h20" style="stroke:var(--color-success)" stroke-width="2" stroke-linecap="round" opacity=".3"/></svg>',
     title: '科学管理',
     desc: 'AI健康监测预警，疫苗驱虫智能提醒，全方位健康档案管理'
   }
@@ -102,8 +115,31 @@ async function loadCourses() {
   } catch (e) {}
 }
 
+async function checkPetGuide() {
+  try {
+    const res = await petApi.hasPet()
+    if (res.code === 200 && !res.data.hasPet) {
+      const dismissed = sessionStorage.getItem('pet_guide_dismissed')
+      if (!dismissed) {
+        showGuide.value = true
+      }
+    }
+  } catch (e) {}
+}
+
+function goAddPet() {
+  showGuide.value = false
+  router.push('/client/pet/create')
+}
+
+function dismissGuide() {
+  showGuide.value = false
+  sessionStorage.setItem('pet_guide_dismissed', '1')
+}
+
 onMounted(() => {
   loadCourses()
+  checkPetGuide()
 })
 </script>
 
@@ -114,7 +150,7 @@ onMounted(() => {
 }
 
 .hero {
-  background: linear-gradient(135deg, #eef2ff 0%, #fff7ed 50%, #ecfdf5 100%);
+  background: linear-gradient(135deg, var(--color-primary-bg) 0%, var(--color-accent-bg) 50%, var(--color-success-bg) 100%);
   padding: var(--space-8) var(--space-6);
 }
 
@@ -403,5 +439,43 @@ onMounted(() => {
   .features-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.guide-modal {
+  max-width: 440px;
+  text-align: center;
+  padding: var(--space-7) var(--space-5);
+  box-shadow: var(--shadow-float);
+}
+
+.guide-icon {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-3);
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.guide-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-title);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.guide-desc {
+  font-size: var(--font-size-base);
+  color: var(--text-body);
+  margin: 0 0 var(--space-5) 0;
+  line-height: var(--line-height-relaxed);
+}
+
+.guide-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 </style>

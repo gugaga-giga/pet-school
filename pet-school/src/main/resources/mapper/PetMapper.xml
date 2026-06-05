@@ -1,14 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.petschool.mapper.PetMapper">
+
+    <sql id="petColumns">
+        p.id, p.user_id, p.avatar, p.name, p.pet_type, p.breed, p.gender,
+        p.birthday, p.weight, p.color, p.microchip_no, p.sterilized,
+        p.blood_type, p.allergy_info, p.remark, p.status,
+        p.create_time, p.update_time
+    </sql>
+
+    <sql id="petSelect">
+        <include refid="petColumns"/>,
+        u.username,
+        TIMESTAMPDIFF(YEAR, p.birthday, CURDATE()) AS age
+    </sql>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO pet (user_id, name, breed, age, weight)
-        VALUES (#{userId}, #{name}, #{breed}, #{age}, #{weight})
+        INSERT INTO pet (user_id, avatar, name, pet_type, breed, gender, birthday, weight,
+                        color, microchip_no, sterilized, blood_type, allergy_info, remark, status)
+        VALUES (#{userId}, #{avatar}, #{name}, #{petType}, #{breed}, #{gender}, #{birthday}, #{weight},
+                #{color}, #{microchipNo}, #{sterilized}, #{bloodType}, #{allergyInfo}, #{remark}, #{status})
     </insert>
+
     <select id="selectById" resultType="com.petschool.entity.Pet">
-        SELECT id, user_id, name, breed, age, weight FROM pet WHERE id = #{id}
+        SELECT <include refid="petSelect"/>
+        FROM pet p
+        LEFT JOIN user u ON p.user_id = u.id
+        WHERE p.id = #{id}
     </select>
+
     <select id="selectByUserId" resultType="com.petschool.entity.Pet">
-        SELECT id, user_id, name, breed, age, weight FROM pet WHERE user_id = #{userId}
+        SELECT <include refid="petSelect"/>
+        FROM pet p
+        LEFT JOIN user u ON p.user_id = u.id
+        WHERE p.user_id = #{userId}
+        ORDER BY p.create_time DESC
     </select>
+
+    <select id="countByUserId" resultType="int">
+        SELECT COUNT(*) FROM pet WHERE user_id = #{userId}
+    </select>
+
+    <update id="update">
+        UPDATE pet
+        <set>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="petType != null">pet_type = #{petType},</if>
+            <if test="breed != null">breed = #{breed},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="color != null">color = #{color},</if>
+            <if test="microchipNo != null">microchip_no = #{microchipNo},</if>
+            <if test="sterilized != null">sterilized = #{sterilized},</if>
+            <if test="bloodType != null">blood_type = #{bloodType},</if>
+            <if test="allergyInfo != null">allergy_info = #{allergyInfo},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM pet WHERE id = #{id}
+    </delete>
+
+    <select id="selectPage" resultType="com.petschool.entity.Pet">
+        SELECT <include refid="petSelect"/>
+        FROM pet p
+        LEFT JOIN user u ON p.user_id = u.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (p.name LIKE CONCAT('%', #{keyword}, '%')
+                     OR u.username LIKE CONCAT('%', #{keyword}, '%')
+                     OR p.breed LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="petType != null and petType != ''">
+                AND p.pet_type = #{petType}
+            </if>
+            <if test="status != null">
+                AND p.status = #{status}
+            </if>
+        </where>
+        ORDER BY p.create_time DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectPageCount" resultType="int">
+        SELECT COUNT(*)
+        FROM pet p
+        LEFT JOIN user u ON p.user_id = u.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (p.name LIKE CONCAT('%', #{keyword}, '%')
+                     OR u.username LIKE CONCAT('%', #{keyword}, '%')
+                     OR p.breed LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="petType != null and petType != ''">
+                AND p.pet_type = #{petType}
+            </if>
+            <if test="status != null">
+                AND p.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDetailById" resultType="com.petschool.entity.Pet">
+        SELECT <include refid="petSelect"/>
+        FROM pet p
+        LEFT JOIN user u ON p.user_id = u.id
+        WHERE p.id = #{id}
+    </select>
+
+    <select id="selectStats" resultType="java.util.Map">
+        SELECT pet_type AS petType, COUNT(*) AS count
+        FROM pet
+        WHERE status = 0
+        GROUP BY pet_type
+    </select>
+
+    <select id="countByPetType" resultType="int">
+        SELECT COUNT(*) FROM pet WHERE pet_type = #{petType} AND status = 0
+    </select>
+
+    <select id="countTodayNew" resultType="int">
+        SELECT COUNT(*) FROM pet WHERE DATE(create_time) = CURDATE()
+    </select>
+
 </mapper>

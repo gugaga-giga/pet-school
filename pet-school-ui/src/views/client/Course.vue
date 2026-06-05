@@ -550,7 +550,7 @@ onMounted(async () => {
   padding: 3px 10px;
   border-radius: var(--radius-full);
   background: var(--color-accent-bg);
-  color: #92400e;
+  color: var(--color-warning-text);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   white-space: nowrap;
@@ -725,7 +725,7 @@ onMounted(async () => {
 .pkg-card--selected {
   border-color: var(--color-primary);
   background: var(--color-primary-bg);
-  box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.1);
+  box-shadow: 0 0 0 3px var(--color-primary-50);
 }
 
 .pkg-card__info {
@@ -908,9 +908,9 @@ onMounted(async () => {
   padding: 0 5px;
   border-radius: var(--radius-full);
   background: var(--color-danger);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
+  color: var(--text-inverse);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   line-height: 1;
 }
 
@@ -921,7 +921,7 @@ onMounted(async () => {
   margin-top: var(--space-2);
   padding: var(--space-2) var(--space-3);
   background: var(--color-primary-bg);
-  border: 1px solid rgba(79, 124, 255, 0.2);
+  border: 1px solid var(--color-primary-200);
   border-radius: var(--radius-md);
 }
 

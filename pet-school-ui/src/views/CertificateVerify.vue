@@ -112,16 +112,16 @@ onMounted(async () => {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(135deg, #eef2ff 0%, #f7f9fc 30%, #fff8ee 60%, #ecfdf5 100%);
+  background: linear-gradient(135deg, var(--color-primary-bg) 0%, var(--bg-page) 30%, var(--color-accent-bg) 60%, var(--color-success-bg) 100%);
 }
 
 .bg-pattern {
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 20% 50%, rgba(79, 124, 255, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 184, 107, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 50% 80%, rgba(60, 203, 127, 0.04) 0%, transparent 50%);
+    radial-gradient(circle at 20% 50%, var(--color-primary-bg) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--color-accent-bg) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, var(--color-success-bg) 0%, transparent 50%);
 }
 
 .verify-container {
@@ -206,7 +206,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3) 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .detail-row:last-child {

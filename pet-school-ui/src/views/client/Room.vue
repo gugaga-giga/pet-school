@@ -459,21 +459,21 @@ onMounted(() => {
   font-size: var(--font-size-xs);
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 0.5px;
 }
 
 .badge-available {
   color: var(--color-success);
-  background: rgba(60, 203, 127, 0.1);
-  border: 1px solid rgba(60, 203, 127, 0.4);
-  box-shadow: 0 0 8px rgba(60, 203, 127, 0.2);
+  background: var(--color-success-bg);
+  border: 1px solid var(--color-success-light);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.2);
 }
 
 .badge-full {
   color: var(--text-muted);
-  background: rgba(156, 163, 175, 0.1);
-  border: 1px solid rgba(156, 163, 175, 0.3);
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
 }
 
 .rt-facilities {
@@ -491,12 +491,12 @@ onMounted(() => {
 
 .rt-price {
   color: var(--color-accent);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .price-unit {
   font-size: var(--font-size-xs);
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
   color: var(--text-muted);
   margin-left: 2px;
 }
@@ -504,7 +504,7 @@ onMounted(() => {
 .full-text {
   font-size: var(--font-size-sm);
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .room-detail-panel {
@@ -521,7 +521,7 @@ onMounted(() => {
 .detail-header {
   margin-bottom: var(--space-6);
   padding-bottom: var(--space-4);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .detail-title {
@@ -540,7 +540,7 @@ onMounted(() => {
 .section-label {
   font-size: var(--font-size-sm);
   color: var(--text-title);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin: 0 0 var(--space-3) 0;
 }
 
@@ -569,30 +569,30 @@ onMounted(() => {
 
 .room-available {
   background: var(--bg-card);
-  border-color: rgba(60, 203, 127, 0.25);
+  border-color: var(--color-success-light);
 }
 
 .room-available:hover {
   border-color: var(--color-primary);
-  background: rgba(79, 124, 255, 0.04);
+  background: var(--color-primary-50);
   transform: translateY(-1px);
 }
 
 .room-occupied {
-  background: rgba(156, 163, 175, 0.08);
+  background: var(--bg-hover);
   cursor: not-allowed;
   opacity: 0.6;
 }
 
 .room-selected {
   border-color: var(--color-primary) !important;
-  background: rgba(79, 124, 255, 0.08) !important;
+  background: var(--color-primary-bg) !important;
   box-shadow: 0 0 0 1px var(--color-primary);
 }
 
 .room-number {
   font-size: var(--font-size-base);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-title);
 }
 
@@ -645,14 +645,14 @@ onMounted(() => {
   font-size: var(--font-size-sm);
   color: var(--text-body);
   margin-bottom: var(--space-1);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .form-group select,
 .form-group input {
   width: 100%;
   padding: var(--space-2) var(--space-3);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
   color: var(--text-title);
@@ -665,7 +665,7 @@ onMounted(() => {
 .form-group select:focus,
 .form-group input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(79, 124, 255, 0.15);
+  box-shadow: 0 0 0 2px var(--color-primary-bg);
 }
 
 .coupon-section {
@@ -708,9 +708,9 @@ onMounted(() => {
   padding: 0 5px;
   border-radius: var(--radius-full);
   background: var(--color-danger);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
+  color: var(--text-inverse);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   line-height: 1;
 }
 
@@ -721,7 +721,7 @@ onMounted(() => {
   margin-top: var(--space-2);
   padding: var(--space-2) var(--space-3);
   background: var(--color-primary-bg);
-  border: 1px solid rgba(79, 124, 255, 0.2);
+  border: 1px solid var(--color-primary-200);
   border-radius: var(--radius-md);
 }
 
@@ -838,11 +838,11 @@ onMounted(() => {
 }
 
 .price-summary {
-  background: linear-gradient(135deg, rgba(79, 124, 255, 0.04), rgba(255, 184, 107, 0.04));
+  background: linear-gradient(135deg, var(--color-primary-50), var(--color-accent-bg));
   border-radius: var(--radius-md);
   padding: var(--space-5);
   margin-bottom: var(--space-5);
-  border: 1px solid rgba(79, 124, 255, 0.08);
+  border: 1px solid var(--color-primary-100);
 }
 
 .summary-row {
@@ -860,7 +860,7 @@ onMounted(() => {
 .summary-value {
   font-size: var(--font-size-sm);
   color: var(--text-title);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .summary-original {
@@ -876,7 +876,7 @@ onMounted(() => {
 }
 
 .total-row {
-  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+  border-top: 1px dashed var(--border-light);
   margin-top: var(--space-2);
   padding-top: var(--space-3);
 }
@@ -897,7 +897,7 @@ onMounted(() => {
   padding: var(--space-3);
   font-size: var(--font-size-base);
   border-radius: var(--radius-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin-top: var(--space-2);
 }
 

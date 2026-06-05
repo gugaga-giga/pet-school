@@ -40,6 +40,7 @@ public class DatabaseInitRunner implements CommandLineRunner {
         createWalletTable();
         createWalletRecordTable();
         addOrderPaymentColumns();
+        addPetColumns();
     }
 
     private void createWebrtcSignalTable() {
@@ -620,5 +621,22 @@ public class DatabaseInitRunner implements CommandLineRunner {
         addColumnIfNotExists("medical_order", "payment_type", "INT DEFAULT NULL");
         addColumnIfNotExists("medical_order", "payment_time", "DATETIME DEFAULT NULL");
         addColumnIfNotExists("medical_order", "transaction_no", "VARCHAR(32) DEFAULT NULL");
+    }
+
+    private void addPetColumns() {
+        addColumnIfNotExists("pet", "avatar", "VARCHAR(255) DEFAULT NULL");
+        addColumnIfNotExists("pet", "pet_type", "VARCHAR(20) DEFAULT 'dog'");
+        addColumnIfNotExists("pet", "gender", "INT DEFAULT 1");
+        addColumnIfNotExists("pet", "birthday", "DATE DEFAULT NULL");
+        addColumnIfNotExists("pet", "color", "VARCHAR(50) DEFAULT NULL");
+        addColumnIfNotExists("pet", "microchip_no", "VARCHAR(50) DEFAULT NULL");
+        addColumnIfNotExists("pet", "sterilized", "INT DEFAULT 0");
+        addColumnIfNotExists("pet", "blood_type", "VARCHAR(20) DEFAULT NULL");
+        addColumnIfNotExists("pet", "allergy_info", "VARCHAR(500) DEFAULT NULL");
+        addColumnIfNotExists("pet", "remark", "VARCHAR(500) DEFAULT NULL");
+        addColumnIfNotExists("pet", "status", "INT DEFAULT 0");
+        addColumnIfNotExists("pet", "create_time", "DATETIME DEFAULT CURRENT_TIMESTAMP");
+        addColumnIfNotExists("pet", "update_time", "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        System.out.println("pet表字段升级完成");
     }
 }

@@ -236,15 +236,15 @@ onMounted(() => {
 }
 
 .section-header--warning {
-  background: linear-gradient(135deg, rgba(255, 184, 77, 0.06), rgba(255, 184, 77, 0.02));
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.06), rgba(245, 158, 11, 0.02));
 }
 
 .section-header--danger {
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.06), rgba(255, 107, 107, 0.02));
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.06), rgba(239, 68, 68, 0.02));
 }
 
 .section-header--success {
-  background: linear-gradient(135deg, rgba(60, 203, 127, 0.06), rgba(60, 203, 127, 0.02));
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.06), rgba(34, 197, 94, 0.02));
 }
 
 .section-icon {
@@ -274,17 +274,17 @@ onMounted(() => {
 
 .badge-warning {
   background: var(--color-warning-bg);
-  color: #92400e;
+  color: var(--color-warning-text);
 }
 
 .badge-danger {
   background: var(--color-danger-bg);
-  color: #991b1b;
+  color: var(--color-danger-text);
 }
 
 .badge-success {
   background: var(--color-success-bg);
-  color: #15803d;
+  color: var(--color-success-text);
 }
 
 .remind-cards {
@@ -306,18 +306,18 @@ onMounted(() => {
 }
 
 .remind-card--warning {
-  background: linear-gradient(135deg, rgba(255, 184, 77, 0.08), rgba(255, 184, 77, 0.03));
-  border-color: rgba(255, 184, 77, 0.25);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.03));
+  border-color: rgba(245, 158, 11, 0.25);
 }
 
 .remind-card--danger {
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.08), rgba(255, 107, 107, 0.03));
-  border-color: rgba(255, 107, 107, 0.25);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.03));
+  border-color: rgba(239, 68, 68, 0.25);
 }
 
 .remind-card--success {
-  background: linear-gradient(135deg, rgba(60, 203, 127, 0.08), rgba(60, 203, 127, 0.03));
-  border-color: rgba(60, 203, 127, 0.25);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(34, 197, 94, 0.03));
+  border-color: rgba(34, 197, 94, 0.25);
 }
 
 .remind-card__top {
@@ -336,7 +336,7 @@ onMounted(() => {
 .remind-days {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
-  color: #92400e;
+  color: var(--color-warning-text);
   background: var(--color-warning-bg);
   padding: 2px 10px;
   border-radius: var(--radius-full);
@@ -345,7 +345,7 @@ onMounted(() => {
 .remind-expired-tag {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  color: #991b1b;
+  color: var(--color-danger-text);
   background: var(--color-danger-bg);
   padding: 2px 10px;
   border-radius: var(--radius-full);

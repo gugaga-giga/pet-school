@@ -214,7 +214,7 @@ onMounted(async () => {
 }
 
 .sub-nav-icon {
-  font-size: 14px;
+  font-size: var(--font-size-base);
 }
 
 .pet-filter {
@@ -313,7 +313,7 @@ onMounted(async () => {
   justify-content: space-between;
   align-items: center;
   padding: var(--space-4) var(--space-5);
-  background: linear-gradient(135deg, rgba(79, 124, 255, 0.03), rgba(255, 184, 107, 0.03));
+  background: linear-gradient(135deg, var(--color-primary-50), var(--color-accent-bg));
   border-bottom: 1px solid var(--border-light);
 }
 

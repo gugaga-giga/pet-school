@@ -214,7 +214,7 @@ watch(tab, loadCoupons)
 
 .stat-chip--primary {
   background: var(--color-primary-bg);
-  border-color: rgba(79, 124, 255, 0.2);
+  border-color: var(--color-primary-200);
   color: var(--color-primary-dark);
 }
 
@@ -240,7 +240,7 @@ watch(tab, loadCoupons)
   background: transparent;
   color: var(--text-body);
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: all var(--transition-base);
   white-space: nowrap;
@@ -248,13 +248,13 @@ watch(tab, loadCoupons)
 
 .tab-pill:hover {
   color: var(--text-title);
-  background: rgba(79, 124, 255, 0.06);
+  background: var(--color-primary-50);
 }
 
 .tab-pill--active {
   background: var(--color-primary);
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(79, 124, 255, 0.35);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-button);
 }
 
 .coupon-list {
@@ -306,7 +306,7 @@ watch(tab, loadCoupons)
 }
 
 .ticket-left--universal {
-  background: linear-gradient(135deg, #4F7CFF 0%, #FFB86B 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
 }
 
 .ticket-value {

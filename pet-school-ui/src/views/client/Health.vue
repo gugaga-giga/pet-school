@@ -378,12 +378,12 @@ function initCharts() {
         smooth: true,
         symbol: 'circle',
         symbolSize: 6,
-        lineStyle: { color: '#4F7CFF', width: 2 },
-        itemStyle: { color: '#4F7CFF' },
+        lineStyle: { color: '#4F8EF7', width: 2 },
+        itemStyle: { color: '#4F8EF7' },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(79,124,255,0.15)' },
-            { offset: 1, color: 'rgba(79,124,255,0.01)' }
+            { offset: 0, color: 'rgba(79,142,247,0.15)' },
+            { offset: 1, color: 'rgba(79,142,247,0.01)' }
           ])
         }
       }]
@@ -401,12 +401,12 @@ function initCharts() {
         smooth: true,
         symbol: 'circle',
         symbolSize: 6,
-        lineStyle: { color: '#FF6B6B', width: 2 },
-        itemStyle: { color: '#FF6B6B' },
+        lineStyle: { color: '#EF4444', width: 2 },
+        itemStyle: { color: '#EF4444' },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(255,107,107,0.15)' },
-            { offset: 1, color: 'rgba(255,107,107,0.01)' }
+            { offset: 0, color: 'rgba(239,68,68,0.15)' },
+            { offset: 1, color: 'rgba(239,68,68,0.01)' }
           ])
         }
       }]
@@ -424,12 +424,12 @@ function initCharts() {
         smooth: true,
         symbol: 'circle',
         symbolSize: 6,
-        lineStyle: { color: '#3CCB7F', width: 2 },
-        itemStyle: { color: '#3CCB7F' },
+        lineStyle: { color: '#22C55E', width: 2 },
+        itemStyle: { color: '#22C55E' },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(60,203,127,0.15)' },
-            { offset: 1, color: 'rgba(60,203,127,0.01)' }
+            { offset: 0, color: 'rgba(34,197,94,0.15)' },
+            { offset: 1, color: 'rgba(34,197,94,0.01)' }
           ])
         }
       }]
@@ -541,7 +541,7 @@ onMounted(loadPets)
 
 .score-number {
   font-size: 42px;
-  font-weight: 800;
+  font-weight: var(--font-weight-bold);
   line-height: 1;
   letter-spacing: -0.03em;
 }
@@ -600,18 +600,18 @@ onMounted(loadPets)
 .indicator-dot {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   flex-shrink: 0;
 }
 
 .dot-green {
   background: var(--color-success);
-  box-shadow: 0 0 6px rgba(60, 203, 127, 0.4);
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.4);
 }
 
 .dot-yellow {
   background: var(--color-warning);
-  box-shadow: 0 0 6px rgba(255, 184, 77, 0.4);
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
 }
 
 .dot-orange {
@@ -621,7 +621,7 @@ onMounted(loadPets)
 
 .dot-red {
   background: var(--color-danger);
-  box-shadow: 0 0 6px rgba(255, 107, 107, 0.4);
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
 }
 
 .dot-muted {
@@ -730,7 +730,7 @@ onMounted(loadPets)
   top: 4px;
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   border: 2px solid var(--bg-card);
   z-index: 1;
 }

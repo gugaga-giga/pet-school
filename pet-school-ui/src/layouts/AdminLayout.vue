@@ -1,6 +1,9 @@
 <template>
   <div class="admin-layout">
-    <aside class="sidebar glass">
+    <!-- Mobile overlay -->
+    <div v-if="sidebarOpen" class="sidebar-overlay" @click="sidebarOpen = false"></div>
+
+    <aside class="sidebar glass" :class="{ open: sidebarOpen }">
       <div class="sidebar-brand" @click="$router.push('/admin')">
         <div class="brand-icon">🐾</div>
         <div class="brand-text">
@@ -12,14 +15,14 @@
         <router-link to="/admin/course" class="nav-item">
           <span class="nav-icon">📚</span><span class="nav-label">课程管理</span>
         </router-link>
-        <router-link to="/admin/customer" class="nav-item">
+        <router-link to="/admin/pet" class="nav-item">
+          <span class="nav-icon">🐾</span><span class="nav-label">宠物管理</span>
+        </router-link>
+        <router-link to="/admin/customer" class="nav-item nav-sub-item">
           <span class="nav-icon">👥</span><span class="nav-label">客户维护</span>
         </router-link>
-        <router-link to="/admin/certificate" class="nav-item">
-          <span class="nav-icon">🎓</span><span class="nav-label">毕业证书</span>
-        </router-link>
         <router-link to="/admin/room" class="nav-item">
-          <span class="nav-icon">🏠</span><span class="nav-label">房型管理</span>
+          <span class="nav-icon">🏠</span><span class="nav-label">寄宿管理</span>
         </router-link>
         <router-link to="/admin/order" class="nav-item">
           <span class="nav-icon">📋</span><span class="nav-label">订单管理</span>
@@ -27,34 +30,56 @@
         <router-link to="/admin/coupon" class="nav-item">
           <span class="nav-icon">🎫</span><span class="nav-label">优惠管理</span>
         </router-link>
+        <router-link to="/admin/certificate" class="nav-item">
+          <span class="nav-icon">🎓</span><span class="nav-label">毕业证书</span>
+        </router-link>
+
+        <!-- Medical Group -->
+        <div class="nav-group" :class="{ expanded: medicalExpanded }">
+          <div class="nav-group-header" @click="medicalExpanded = !medicalExpanded">
+            <span class="nav-group-title">🏥 医疗管理</span>
+            <span class="nav-group-arrow" :class="{ rotated: medicalExpanded }">›</span>
+          </div>
+          <div class="nav-group-items" v-show="medicalExpanded">
+            <router-link to="/admin/medical-dept" class="nav-item nav-sub-item">
+              <span class="nav-icon">🏥</span><span class="nav-label">科室管理</span>
+            </router-link>
+            <router-link to="/admin/medical-doctor" class="nav-item nav-sub-item">
+              <span class="nav-icon">🩺</span><span class="nav-label">医生管理</span>
+            </router-link>
+            <router-link to="/admin/medical-order" class="nav-item nav-sub-item">
+              <span class="nav-icon">📋</span><span class="nav-label">医疗订单</span>
+            </router-link>
+            <router-link to="/admin/medical-record" class="nav-item nav-sub-item">
+              <span class="nav-icon">📄</span><span class="nav-label">病历管理</span>
+            </router-link>
+            <router-link to="/admin/medical-vaccine" class="nav-item nav-sub-item">
+              <span class="nav-icon">💉</span><span class="nav-label">疫苗管理</span>
+            </router-link>
+            <router-link to="/admin/medical-deworming" class="nav-item nav-sub-item">
+              <span class="nav-icon">🐛</span><span class="nav-label">驱虫管理</span>
+            </router-link>
+          </div>
+        </div>
+
+        <!-- Finance Group -->
+        <div class="nav-group" :class="{ expanded: financeExpanded }">
+          <div class="nav-group-header" @click="financeExpanded = !financeExpanded">
+            <span class="nav-group-title">💰 财务管理</span>
+            <span class="nav-group-arrow" :class="{ rotated: financeExpanded }">›</span>
+          </div>
+          <div class="nav-group-items" v-show="financeExpanded">
+            <router-link to="/admin/wallet" class="nav-item nav-sub-item">
+              <span class="nav-icon">💰</span><span class="nav-label">钱包管理</span>
+            </router-link>
+            <router-link to="/admin/wallet-record" class="nav-item nav-sub-item">
+              <span class="nav-icon">💳</span><span class="nav-label">钱包流水</span>
+            </router-link>
+          </div>
+        </div>
+
         <router-link to="/admin/health" class="nav-item">
-          <span class="nav-icon">🩺</span><span class="nav-label">宠物健康</span>
-        </router-link>
-        <div class="nav-group-title">🏥 医疗管理</div>
-        <router-link to="/admin/medical-dept" class="nav-item">
-          <span class="nav-icon">🏥</span><span class="nav-label">科室管理</span>
-        </router-link>
-        <router-link to="/admin/medical-doctor" class="nav-item">
-          <span class="nav-icon">🏥</span><span class="nav-label">医生管理</span>
-        </router-link>
-        <router-link to="/admin/medical-order" class="nav-item">
-          <span class="nav-icon">🏥</span><span class="nav-label">医疗订单</span>
-        </router-link>
-        <router-link to="/admin/medical-record" class="nav-item">
-          <span class="nav-icon">🏥</span><span class="nav-label">病历管理</span>
-        </router-link>
-        <router-link to="/admin/medical-vaccine" class="nav-item">
-          <span class="nav-icon">🏥</span><span class="nav-label">疫苗管理</span>
-        </router-link>
-        <router-link to="/admin/medical-deworming" class="nav-item">
-          <span class="nav-icon">🏥</span><span class="nav-label">驱虫管理</span>
-        </router-link>
-        <div class="nav-group-title">💰 钱包管理</div>
-        <router-link to="/admin/wallet" class="nav-item">
-          <span class="nav-icon">💰</span><span class="nav-label">钱包管理</span>
-        </router-link>
-        <router-link to="/admin/wallet-record" class="nav-item">
-          <span class="nav-icon">💳</span><span class="nav-label">钱包流水</span>
+          <span class="nav-icon">🩺</span><span class="nav-label">健康管理</span>
         </router-link>
       </nav>
       <div class="sidebar-footer">
@@ -70,7 +95,15 @@
     <div class="admin-main">
       <header class="topbar glass">
         <div class="topbar-left">
-          <h2 class="topbar-title">{{ currentPageTitle }}</h2>
+          <button class="btn btn-ghost btn-icon hamburger" @click="sidebarOpen = !sidebarOpen" title="菜单">☰</button>
+          <div class="topbar-breadcrumb">
+            <div class="breadcrumb">
+              <a @click.prevent="$router.push('/admin')">首页</a>
+              <span class="separator">/</span>
+              <span class="current">{{ currentPageTitle }}</span>
+            </div>
+            <h2 class="topbar-title">{{ currentPageTitle }}</h2>
+          </div>
         </div>
         <div class="topbar-right">
           <button class="btn btn-ghost btn-icon" title="刷新" @click="$router.go(0)">🔄</button>
@@ -91,20 +124,25 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 const user = computed(() => { try { return JSON.parse(localStorage.getItem('admin_user')) || {} } catch { return {} } })
 
+const sidebarOpen = ref(false)
+const medicalExpanded = ref(true)
+const financeExpanded = ref(true)
+
 const pageTitles = {
   '/admin/course': '课程管理',
   '/admin/customer': '客户维护',
+  '/admin/pet': '宠物管理',
   '/admin/certificate': '毕业证书管理',
-  '/admin/room': '房型管理',
+  '/admin/room': '寄宿管理',
   '/admin/order': '订单管理',
   '/admin/coupon': '优惠管理',
-  '/admin/health': '宠物健康管理',
+  '/admin/health': '健康管理',
   '/admin/medical': '医疗服务',
   '/admin/medical-dept': '科室管理',
   '/admin/medical-doctor': '医生管理',
@@ -132,6 +170,16 @@ function logout() {
   background: var(--bg-page);
 }
 
+/* ========== Sidebar Overlay (mobile) ========== */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  z-index: 90;
+  animation: fadeIn var(--transition-fast) ease;
+}
+
+/* ========== Sidebar ========== */
 .sidebar {
   width: var(--sidebar-width);
   height: 100vh;
@@ -173,6 +221,7 @@ function logout() {
 .brand-name { font-size: var(--font-size-md); font-weight: var(--font-weight-bold); color: var(--text-title); line-height: 1.2; }
 .brand-sub { font-size: var(--font-size-xs); color: var(--text-muted); }
 
+/* ========== Sidebar Nav ========== */
 .sidebar-nav {
   flex: 1;
   display: flex;
@@ -205,18 +254,62 @@ function logout() {
   font-weight: var(--font-weight-semibold);
 }
 
+/* Sub-item indentation */
+.nav-sub-item {
+  padding-left: 24px;
+  font-size: var(--font-size-sm);
+}
+
 .nav-icon { font-size: var(--font-size-md); width: 24px; text-align: center; flex-shrink: 0; }
 .nav-label { white-space: nowrap; }
+
+/* ========== Nav Group (collapsible) ========== */
+.nav-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+  user-select: none;
+}
+
+.nav-group-header:hover {
+  background: var(--bg-hover);
+}
 
 .nav-group-title {
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
-  padding: 12px 12px 4px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
+.nav-group-arrow {
+  font-size: var(--font-size-md);
+  color: var(--text-muted);
+  transition: transform var(--transition-fast);
+  line-height: 1;
+}
+
+.nav-group-arrow.rotated {
+  transform: rotate(90deg);
+}
+
+.nav-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ========== Sidebar Footer ========== */
 .sidebar-footer {
   padding-top: var(--space-3);
   border-top: 1px solid var(--border-light);
@@ -248,6 +341,7 @@ function logout() {
 .user-name { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--text-title); line-height: 1.2; }
 .user-role { font-size: var(--font-size-xs); color: var(--text-muted); }
 
+/* ========== Main Area ========== */
 .admin-main {
   flex: 1;
   margin-left: var(--sidebar-width);
@@ -256,6 +350,7 @@ function logout() {
   min-height: 100vh;
 }
 
+/* ========== Topbar ========== */
 .topbar {
   height: var(--topbar-height);
   display: flex;
@@ -268,15 +363,39 @@ function logout() {
   border-bottom: 1px solid var(--border-light);
 }
 
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.hamburger {
+  display: none;
+  font-size: 18px;
+}
+
+.topbar-breadcrumb {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.topbar-breadcrumb .breadcrumb {
+  margin-bottom: 0;
+  font-size: var(--font-size-xs);
+}
+
 .topbar-title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
   color: var(--text-title);
   letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .topbar-right { display: flex; align-items: center; gap: var(--space-2); }
 
+/* ========== Content ========== */
 .admin-content {
   flex: 1;
   padding: var(--space-5);
@@ -285,6 +404,7 @@ function logout() {
   margin: 0 auto;
 }
 
+/* ========== Responsive ========== */
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
@@ -294,5 +414,6 @@ function logout() {
   .sidebar.open { transform: translateX(0); }
   .admin-main { margin-left: 0; }
   .admin-content { padding: var(--space-3); }
+  .hamburger { display: inline-flex; }
 }
 </style>

@@ -106,15 +106,15 @@ onMounted(() => loadData())
 .data-table td { padding: var(--space-3) var(--space-4); font-size: var(--font-size-sm); color: var(--text-body); border-bottom: 1px solid var(--border-light); }
 .data-table tr:hover td { background: var(--bg-hover); }
 .money { font-variant-numeric: tabular-nums; }
-.money-positive { color: #2E7D32; font-weight: var(--font-weight-semibold); }
-.money-negative { color: #C62828; font-weight: var(--font-weight-semibold); }
+.money-positive { color: var(--color-success-text); font-weight: var(--font-weight-semibold); }
+.money-negative { color: var(--color-danger-text); font-weight: var(--font-weight-semibold); }
 .empty { text-align: center; color: var(--text-muted); padding: var(--space-8) !important; }
-.type-tag { display: inline-block; padding: 2px 10px; border-radius: var(--radius-full); font-size: 12px; font-weight: var(--font-weight-semibold); }
-.tag-recharge { background: #E8F5E9; color: #2E7D32; }
-.tag-consume { background: #FFEBEE; color: #C62828; }
-.tag-refund { background: #E3F2FD; color: #1565C0; }
-.tag-adjust { background: #FFF3E0; color: #E65100; }
-.txn-no { font-family: monospace; font-size: 12px; color: var(--text-muted); }
+.type-tag { display: inline-block; padding: 2px 10px; border-radius: var(--radius-full); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); }
+.tag-recharge { background: var(--color-success-bg); color: var(--color-success-text); }
+.tag-consume { background: var(--color-danger-bg); color: var(--color-danger-text); }
+.tag-refund { background: var(--color-info-bg); color: var(--color-info-text); }
+.tag-adjust { background: var(--color-warning-bg); color: var(--color-warning-dark); }
+.txn-no { font-family: var(--font-mono); font-size: var(--font-size-xs); color: var(--text-muted); }
 .remark-cell { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pagination { display: flex; align-items: center; justify-content: center; gap: var(--space-3); margin-top: var(--space-4); }
 .page-pill { padding: 6px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-card); cursor: pointer; font-size: var(--font-size-sm); }

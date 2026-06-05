@@ -277,7 +277,7 @@ onMounted(() => loadUsers())
 }
 
 .upload-icon {
-  font-size: 32px;
+  font-size: var(--font-size-3xl);
   color: var(--color-primary);
   margin-bottom: var(--space-2);
   opacity: 0.7;
@@ -349,7 +349,7 @@ onMounted(() => loadUsers())
   padding: var(--space-3);
   background: var(--color-success-bg);
   border-radius: var(--radius-md);
-  border: 1px solid #bbf7d0;
+  border: 1px solid #BBF7D0;
 }
 
 .result-icon {
@@ -357,7 +357,7 @@ onMounted(() => loadUsers())
   height: 28px;
   border-radius: var(--radius-full);
   background: var(--color-success);
-  color: white;
+  color: var(--text-inverse);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -377,7 +377,7 @@ onMounted(() => loadUsers())
 .result-label {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  color: #15803d;
+  color: var(--color-success-text);
 }
 
 .result-url {
@@ -399,7 +399,7 @@ onMounted(() => loadUsers())
   width: 8px;
   height: 8px;
   border-radius: var(--radius-full);
-  background: #e74c3c;
+  background: var(--color-danger);
   margin-right: var(--space-2);
   animation: pulse 1.5s ease infinite;
 }
