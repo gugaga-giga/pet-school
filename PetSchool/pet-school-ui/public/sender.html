@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>直播发送端 - 管理员</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f3460;color:#fff;min-height:100vh;padding:24px}
+h1{text-align:center;margin-bottom:8px;font-size:24px}
+.subtitle{text-align:center;color:#aaa;margin-bottom:24px;font-size:14px}
+.container{max-width:900px;margin:0 auto}
+.card{background:#16213e;border-radius:12px;padding:20px;margin-bottom:16px}
+.videos{display:flex;gap:16px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.video-box{background:#1a1a2e;border-radius:12px;padding:12px;text-align:center}
+.video-box video{width:400px;height:300px;background:#000;border-radius:8px;object-fit:cover}
+.video-box p{margin-top:8px;font-size:13px;color:#888}
+.controls{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;align-items:end}
+button{background:#e94560;color:#fff;border:none;padding:12px 28px;border-radius:8px;cursor:pointer;font-size:15px;font-weight:600}
+button:hover{background:#c0392b}
+button:disabled{opacity:0.5;cursor:not-allowed}
+button.secondary{background:#3498db}
+button.secondary:hover{background:#2980b9}
+.status{text-align:center;padding:10px;border-radius:8px;margin-bottom:16px;font-size:15px;font-weight:600}
+.status.idle{background:#333}
+.status.waiting{background:#f39c12;color:#000}
+.status.connected{background:#27ae60}
+.status.error{background:#e74c3c}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;margin-bottom:6px;font-size:13px;color:#aaa}
+.form-group input,.form-group select{width:100%;padding:10px;border:1px solid #333;border-radius:8px;background:#1a1a2e;color:#fff;font-size:14px}
+.log{background:#1a1a2e;border-radius:8px;padding:12px;max-height:250px;overflow-y:auto;font-family:monospace;font-size:12px;line-height:1.6}
+.log .info{color:#0f0}
+.log .error{color:#f44}
+.log .warn{color:#ff0}
+</style>
+</head>
+<body>
+<h1>📹 直播发送端</h1>
+<p class="subtitle">管理员一键开播 · 信令自动交换</p>
+
+<div id="statusBar" class="status idle">⏳ 准备就绪</div>
+
+<div class="controls">
+  <div class="form-group" style="margin:0;min-width:200px">
+    <label>直播ID（live_session 表的 ID）</label>
+    <input type="number" id="liveIdInput" value="1" min="1" />
+  </div>
+  <button onclick="startBroadcast()" id="btnStart">🔴 一键开播</button>
+  <button onclick="stopBroadcast()" id="btnStop" disabled style="background:#e74c3c">⏹ 停止直播</button>
+  <button onclick="testApi()" class="secondary" id="btnTest">🔧 测试API</button>
+</div>
+
+<div class="videos">
+  <div class="video-box">
+    <video id="localVideo" autoplay muted playsinline></video>
+    <p>📷 本地摄像头</p>
+  </div>
+  <div class="video-box">
+    <video id="remoteVideo" autoplay playsinline></video>
+    <p>📺 远程回传</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card">
+    <h3 style="margin-bottom:8px">📋 连接日志</h3>
+    <div id="logArea" class="log"><div class="info">等待开播...</div></div>
+  </div>
+</div>
+
+<script>
+const API_BASE = '/api/webrtc';
+const rtcConfig = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+
+let pc = null;
+let localStream = null;
+let liveId = 1;
+let candidates = [];
+let pollTimer = null;
+
+function log(msg, type) {
+  type = type || 'info';
+  const area = document.getElementById('logArea');
+  const time = new Date().toLocaleTimeString();
+  area.innerHTML += '<div class="' + type + '">[' + time + '] ' + msg + '</div>';
+  area.scrollTop = area.scrollHeight;
+}
+
+function setStatus(text, type) {
+  const bar = document.getElementById('statusBar');
+  bar.textContent = text;
+  bar.className = 'status ' + type;
+}
+
+async function api(path, method, body) {
+  const opts = { method: method || 'GET', headers: { 'Content-Type': 'application/json' } };
+  if (body) opts.body = JSON.stringify(body);
+  const url = API_BASE + path;
+  log('→ ' + method + ' ' + url);
+  try {
+    const res = await fetch(url, opts);
+    const data = await res.json();
+    log('← ' + res.status + ' ' + JSON.stringify(data).substring(0, 200), res.ok ? 'info' : 'error');
+    return data;
+  } catch (e) {
+    log('❌ 请求失败: ' + e.message, 'error');
+    throw e;
+  }
+}
+
+async function testApi() {
+  log('🔧 测试后端API连通性...');
+  try {
+    const res = await api('/signal/1', 'GET');
+    if (res.code === 200) {
+      log('✅ API连通，信令数据已存在', 'info');
+    } else if (res.code === 404) {
+      log('✅ API连通，信令数据为空（正常，尚未开播）', 'info');
+    } else {
+      log('⚠️ API返回异常: ' + JSON.stringify(res), 'warn');
+    }
+  } catch (e) {
+    log('❌ API不通！请确认后端已启动(localhost:8080)', 'error');
+    log('提示：检查 1)后端是否启动 2)webrtc_signal表是否创建 3)Vite代理是否正常', 'warn');
+  }
+}
+
+async function startBroadcast() {
+  liveId = parseInt(document.getElementById('liveIdInput').value) || 1;
+  document.getElementById('btnStart').disabled = true;
+  document.getElementById('btnStop').disabled = false;
+
+  try {
+    log('📷 正在获取摄像头...');
+    localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    document.getElementById('localVideo').srcObject = localStream;
+    log('📷 摄像头已启动');
+  } catch (e) {
+    log('❌ 摄像头获取失败: ' + e.message, 'error');
+    setStatus('摄像头获取失败', 'error');
+    document.getElementById('btnStart').disabled = false;
+    document.getElementById('btnStop').disabled = true;
+    return;
+  }
+
+  try {
+    pc = new RTCPeerConnection(rtcConfig);
+    candidates = [];
+
+    localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+
+    pc.ontrack = (e) => {
+      document.getElementById('remoteVideo').srcObject = e.streams[0];
+      log('📺 收到远程回传视频');
+    };
+
+    pc.onicecandidate = (e) => {
+      if (e.candidate) {
+        candidates.push(e.candidate);
+      }
+    };
+
+    pc.oniceconnectionstatechange = () => {
+      const s = pc.iceConnectionState;
+      log('🔗 ICE状态: ' + s);
+      if (s === 'connected' || s === 'completed') {
+        setStatus('🟢 直播中', 'connected');
+      } else if (s === 'disconnected') {
+        setStatus('⚠️ 连接断开', 'error');
+      } else if (s === 'failed') {
+        setStatus('❌ 连接失败', 'error');
+      }
+    };
+
+    log('📡 正在创建 Offer...');
+    const offer = await pc.createOffer();
+    await pc.setLocalDescription(offer);
+    log('✅ Offer 已创建，等待ICE收集...');
+
+    await new Promise(resolve => {
+      if (pc.iceGatheringState === 'complete') return resolve();
+      const check = () => { if (pc.iceGatheringState === 'complete') resolve(); };
+      pc.onicegatheringstatechange = check;
+      setTimeout(resolve, 5000);
+    });
+
+    const offerSdp = JSON.stringify(pc.localDescription);
+    const senderCandidates = JSON.stringify(candidates);
+    log('📤 Offer大小: ' + offerSdp.length + '字节, Candidates: ' + candidates.length + '个');
+
+    log('📤 正在上传 Offer 到服务器...');
+    const saveRes = await api('/offer/' + liveId, 'POST', { offerSdp, senderCandidates });
+    if (saveRes.code === 200) {
+      log('✅ Offer 已上传，等待客户端接入...', 'info');
+      setStatus('⏳ 等待客户端接入...', 'waiting');
+      startPolling();
+    } else {
+      log('❌ Offer 上传失败: ' + (saveRes.message || '未知错误'), 'error');
+      setStatus('上传失败', 'error');
+      document.getElementById('btnStart').disabled = false;
+      document.getElementById('btnStop').disabled = true;
+    }
+  } catch (e) {
+    log('❌ 开播失败: ' + e.message, 'error');
+    setStatus('开播失败', 'error');
+    document.getElementById('btnStart').disabled = false;
+    document.getElementById('btnStop').disabled = true;
+  }
+}
+
+function startPolling() {
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(async () => {
+    try {
+      const res = await api('/signal/' + liveId, 'GET');
+      if (res.code === 200 && res.data && res.data.answerSdp) {
+        log('📥 收到 Answer，正在应用...');
+        clearInterval(pollTimer);
+        pollTimer = null;
+
+        const answer = JSON.parse(res.data.answerSdp);
+        await pc.setRemoteDescription(new RTCSessionDescription(answer));
+        log('✅ Answer 已应用');
+
+        if (res.data.receiverCandidates) {
+          try {
+            const rc = JSON.parse(res.data.receiverCandidates);
+            for (const c of rc) {
+              await pc.addIceCandidate(new RTCIceCandidate(c));
+            }
+            log('✅ Receiver Candidates 已添加 (' + rc.length + '个)');
+          } catch (e) {
+            log('⚠️ Receiver Candidates 解析失败: ' + e.message, 'warn');
+          }
+        }
+
+        setStatus('🟢 直播中', 'connected');
+      }
+    } catch (e) {
+      log('⚠️ 轮询失败: ' + e.message, 'warn');
+    }
+  }, 2000);
+}
+
+async function stopBroadcast() {
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  if (pc) { pc.close(); pc = null; }
+  if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+  document.getElementById('localVideo').srcObject = null;
+  document.getElementById('remoteVideo').srcObject = null;
+  document.getElementById('btnStart').disabled = false;
+  document.getElementById('btnStop').disabled = true;
+  setStatus('⏹ 直播已停止', 'idle');
+  log('⏹ 直播已停止');
+
+  try { await api('/signal/' + liveId, 'DELETE'); } catch (e) {}
+}
+</script>
+</body>
+</html>

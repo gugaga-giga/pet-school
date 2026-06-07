@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.mapper.CoursePackageMapper">
+    <select id="selectByCourseId" resultType="com.petschool.entity.CoursePackage">
+        SELECT id, course_id, name, price, level FROM course_package WHERE course_id = #{courseId}
+    </select>
+    <select id="selectById" resultType="com.petschool.entity.CoursePackage">
+        SELECT id, course_id, name, price, level FROM course_package WHERE id = #{id}
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO course_package (course_id, name, price, level)
+        VALUES (#{courseId}, #{name}, #{price}, #{level})
+    </insert>
+    <update id="update">
+        UPDATE course_package SET name = #{name}, price = #{price}, level = #{level}
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM course_package WHERE id = #{id}
+    </delete>
+    <delete id="deleteByCourseId">
+        DELETE FROM course_package WHERE course_id = #{courseId}
+    </delete>
+</mapper>

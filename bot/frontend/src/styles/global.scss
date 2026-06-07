@@ -1,0 +1,205 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+// 滚动条
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c0c4cc;
+  border-radius: 3px;
+
+  &:hover {
+    background: #909399;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+// 暗黑模式滚动条
+html.dark {
+  ::-webkit-scrollbar-thumb {
+    background: #4a4a6a;
+
+    &:hover {
+      background: #6a6a8a;
+    }
+  }
+}
+
+// Markdown样式
+.markdown-body {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--el-text-color-regular);
+  word-wrap: break-word;
+
+  p {
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+  }
+
+  ul,
+  ol {
+    padding-left: 20px;
+    margin-bottom: 8px;
+  }
+
+  code {
+    padding: 2px 6px;
+    background: var(--el-fill-color-light);
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'Fira Code', Consolas, Monaco, monospace;
+  }
+
+  pre {
+    margin: 8px 0;
+    border-radius: 8px;
+    overflow: hidden;
+
+    code {
+      display: block;
+      padding: 16px;
+      background: #1e1e2e;
+      color: #cdd6f4;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+  }
+
+  blockquote {
+    margin: 8px 0;
+    padding: 8px 16px;
+    border-left: 4px solid var(--el-color-primary);
+    background: var(--el-fill-color-lighter);
+    color: var(--el-text-color-secondary);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+
+    th,
+    td {
+      border: 1px solid var(--el-border-color-lighter);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    th {
+      background: var(--el-fill-color-lighter);
+      font-weight: 600;
+    }
+  }
+
+  a {
+    color: var(--el-color-primary);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+}
+
+// 代码复制按钮
+.code-block-wrapper {
+  position: relative;
+
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 4px;
+    color: #cdd6f4;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  &:hover .copy-btn {
+    opacity: 1;
+  }
+}
+
+// 过渡动画
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.slide-fade-enter-from {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateY(10px);
+  opacity: 0;
+}

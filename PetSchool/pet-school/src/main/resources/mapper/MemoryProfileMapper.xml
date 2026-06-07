@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.petschool.ai.mapper.MemoryProfileMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ai_memory_profile (user_id, `key`, value, source, created_at, updated_at)
+        VALUES (#{userId}, #{key}, #{value}, #{source}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="selectById" resultType="com.petschool.ai.entity.MemoryProfile">
+        SELECT id, user_id, `key`, value, source, created_at, updated_at
+        FROM ai_memory_profile WHERE id = #{id}
+    </select>
+
+    <select id="selectByUserId" resultType="com.petschool.ai.entity.MemoryProfile">
+        SELECT id, user_id, `key`, value, source, created_at, updated_at
+        FROM ai_memory_profile WHERE user_id = #{userId}
+        ORDER BY updated_at DESC
+    </select>
+
+    <select id="selectByUserIdAndKey" resultType="com.petschool.ai.entity.MemoryProfile">
+        SELECT id, user_id, `key`, value, source, created_at, updated_at
+        FROM ai_memory_profile WHERE user_id = #{userId} AND `key` = #{key}
+    </select>
+
+    <update id="update">
+        UPDATE ai_memory_profile
+        <set>
+            <if test="value != null">value = #{value},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM ai_memory_profile WHERE id = #{id}
+    </delete>
+
+</mapper>
