@@ -15,7 +15,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private static final Set<String> WHITE_LIST = Set.of(
             "/auth/login",
             "/auth/register",
-            "/"
+            "/",
+            "/wallet/alipayReturn"
     );
 
     @Override

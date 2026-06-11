@@ -123,6 +123,24 @@ const loadRecords = async () => {
   } catch (e) { console.error(e) }
 }
 
+// const handleRecharge = async () => {
+//   const amount = rechargeAmount.value || Number(customAmount.value)
+//   if (!amount || amount <= 0) { alert('请选择或输入充值金额'); return }
+//   recharging.value = true
+//   try {
+//     const res = await walletApi.recharge({ amount, remark: '用户充值' })
+//     if (res.code === 200) {
+//       alert('充值成功！')
+//       await loadWallet()
+//       recordPage.value = 1
+//       await loadRecords()
+//     } else {
+//       alert(res.message || '充值失败')
+//     }
+//   } catch (e) { alert('充值失败') }
+//   finally { recharging.value = false }
+// }
+
 const handleRecharge = async () => {
   const amount = rechargeAmount.value || Number(customAmount.value)
   if (!amount || amount <= 0) { alert('请选择或输入充值金额'); return }
@@ -130,10 +148,10 @@ const handleRecharge = async () => {
   try {
     const res = await walletApi.recharge({ amount, remark: '用户充值' })
     if (res.code === 200) {
-      alert('充值成功！')
-      await loadWallet()
-      recordPage.value = 1
-      await loadRecords()
+      // 打开支付宝支付页面
+      const payForm = res.payHtml
+      const newWindow = window.open('', '_blank')
+      newWindow.document.write(payForm)
     } else {
       alert(res.message || '充值失败')
     }
@@ -166,22 +184,22 @@ onMounted(() => { loadWallet(); loadRecords() })
 
 .balance-card {
   position: relative;
-  border-radius: var(--radius-xl);
+  border-radius: 20px;
   overflow: hidden;
   margin-bottom: var(--space-8);
-  box-shadow: var(--shadow-glow-primary);
+  box-shadow: 0 8px 32px rgba(79, 124, 255, 0.25);
 }
 
 .balance-card-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 50%, var(--color-accent) 100%);
+  background: linear-gradient(135deg, #4F7CFF 0%, #7B61FF 50%, #FFB86B 100%);
 }
 
 .balance-card-content {
   position: relative;
   padding: var(--space-8) var(--space-6);
-  color: var(--text-inverse);
+  color: #fff;
 }
 
 .balance-label {
@@ -192,7 +210,7 @@ onMounted(() => { loadWallet(); loadRecords() })
 
 .balance-amount {
   font-size: 40px;
-  font-weight: var(--font-weight-bold);
+  font-weight: 800;
   letter-spacing: -1px;
   margin-bottom: var(--space-6);
 }
@@ -210,7 +228,7 @@ onMounted(() => { loadWallet(); loadRecords() })
 }
 
 .stat-label {
-  font-size: var(--font-size-xs);
+  font-size: 12px;
   opacity: 0.7;
 }
 
@@ -267,7 +285,7 @@ onMounted(() => { loadWallet(); loadRecords() })
 
 .recharge-chip--active {
   background: var(--color-primary);
-  color: var(--text-inverse);
+  color: #fff;
   border-color: var(--color-primary);
   box-shadow: var(--shadow-button);
 }
@@ -326,7 +344,7 @@ onMounted(() => { loadWallet(); loadRecords() })
   border: none;
   background: transparent;
   color: var(--text-muted);
-  font-size: var(--font-size-xs);
+  font-size: 12px;
   font-weight: var(--font-weight-medium);
   font-family: var(--font-family);
   cursor: pointer;
@@ -339,7 +357,7 @@ onMounted(() => { loadWallet(); loadRecords() })
 
 .tab-pill--active {
   background: var(--color-primary);
-  color: var(--text-inverse);
+  color: #fff;
   box-shadow: var(--shadow-sm);
 }
 
@@ -370,19 +388,19 @@ onMounted(() => { loadWallet(); loadRecords() })
 .record-icon {
   width: 36px;
   height: 36px;
-  border-radius: var(--radius-full);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size-md);
+  font-size: 16px;
   font-weight: bold;
   flex-shrink: 0;
 }
 
-.icon-recharge { background: var(--color-success-bg); color: var(--color-success-dark); }
-.icon-consume { background: var(--color-danger-bg); color: var(--color-danger-dark); }
-.icon-refund { background: var(--color-info-bg); color: var(--color-primary-dark); }
-.icon-adjust { background: var(--color-warning-bg); color: var(--color-warning-dark); }
+.icon-recharge { background: #E8F5E9; color: #2E7D32; }
+.icon-consume { background: #FFEBEE; color: #C62828; }
+.icon-refund { background: #E3F2FD; color: #1565C0; }
+.icon-adjust { background: #FFF3E0; color: #E65100; }
 
 .record-info {
   flex: 1;
@@ -401,7 +419,7 @@ onMounted(() => { loadWallet(); loadRecords() })
 }
 
 .record-time {
-  font-size: var(--font-size-xs);
+  font-size: 12px;
   color: var(--text-muted);
   margin-top: 2px;
 }
@@ -412,8 +430,8 @@ onMounted(() => { loadWallet(); loadRecords() })
   white-space: nowrap;
 }
 
-.amount-positive { color: var(--color-success-dark); }
-.amount-negative { color: var(--color-danger-dark); }
+.amount-positive { color: #2E7D32; }
+.amount-negative { color: #C62828; }
 
 .load-more {
   text-align: center;
