@@ -85,14 +85,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
-        <!-- Reactor Core -->
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-            <version>3.4.12</version> <!-- 使用最新的版本 -->
-        </dependency>
-
-
     </dependencies>
     <build>
         <plugins>
